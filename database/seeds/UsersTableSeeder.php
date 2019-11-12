@@ -204,7 +204,6 @@ class UsersTableSeeder extends Seeder
         }    
 
         
-        $this->updateFotos();    
-
+        $this->updateFotos();
     }
 }
