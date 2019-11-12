@@ -10,15 +10,10 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-// import Users from './components/users';
-// import Departments from './components/departments';
-// import Game from './components/game';
+import Login from './components/login';
 
 const routes=[
-    // {path:'/',redirect:'/users'},
-    // {path:'/users',component:Users},
-    // {path:'/game',component:Game},
-    // {path:'/departments',component:Departments}
+    {path:'/login',component:Login},
 ];
 
 const router = new VueRouter({
