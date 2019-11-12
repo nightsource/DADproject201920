@@ -1,5 +1,7 @@
 <template>
-    
+    <div>
+        <span>TEST MOFO</span>
+    </div>
 </template>
 
 <script>
