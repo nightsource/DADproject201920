@@ -11,9 +11,12 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import Login from './components/login';
+import Welcome from './components/welcome';
 
 const routes=[
     {path:'/login',component:Login},
+    {path:'/welcome',component:Welcome},
+    {path:'/',redirect:'/welcome'}
 ];
 
 const router = new VueRouter({
