@@ -1,6 +1,6 @@
 <template>
-    <div class="logo">
-        <img src="storage\app\public\media\logo.png"></img>
+    <div class="header">
+        <img class="logo" :src="'/media/logo.png'" >
     </div>
 </template>
 
@@ -20,5 +20,6 @@ export default {
 <style scoped>
 .logo {
     text-align :center;
+    width: 900px;
     }
 </style>
