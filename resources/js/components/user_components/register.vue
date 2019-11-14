@@ -7,7 +7,6 @@
           type="text"
           class="form-control"
           v-model="user.name"
-          v-validate="'required'"
           name="name"
           id="inputName"
           placeholder="Fullname"
@@ -21,7 +20,6 @@
           type="email"
           class="form-control"
           v-model="user.email"
-          v-validate="'required'" 
           name="email"
           id="inputEmail"
           placeholder="Email address"
@@ -39,7 +37,6 @@
                 type="password"
                 class="form-control"
                 v-model="user.password"
-                v-validate="'required'"
                 name="password"
                 id="inputPassword"
                 placeholder="Password"
@@ -48,7 +45,6 @@
             <input
                 type="password"
                 class="form-control"
-                v-validate="'required|confirmed:password'"
                 data-vv-as="password"
                 name="password_confirmation"
                 id="inputPasswordConfirmation"
@@ -74,7 +70,7 @@
       <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
 
       <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="registerUser()">Register</a>
+        <a class="btn btn-primary" v-on:click.prevent="registerUser(user)">Register</a>
         <a class="btn btn-light" v-on:click.prevent="cancelRegister()">Cancel</a>
       </div>
     </div>
@@ -91,14 +87,14 @@
                     nif:"",
                     photo:"",
                     type:"u",                    
-                },
+                }
             }
         },
         methods: {
-            registerUser() {
+            registerUser(user) {
                 //this.$emit('register-user', this.user)
                 axios
-                    .post("api/register/", user)
+                    .post("api/register", user)
                     .then(response => {
                     /*this.showSuccess = true;
                     this.successMessage = "User Registeres";
@@ -111,7 +107,7 @@
                     });
             },
             cancelRegister() {
-                this.$emit('cancel-register')
+                //this.$emit('cancel-register')
             },
             uploadImage(event) {
 
