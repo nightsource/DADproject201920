@@ -67,7 +67,8 @@
         />
       </div>
 
-      <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
+      <input type="file" accept="image/*" @change="uploadImage($event, user)" id="file-input">
+      <a class="btn btn-light" v-on:click.prevent="clearImage(user)">Limpar Imagem</a>
 
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="registerUser(user)">Register</a>
@@ -96,7 +97,7 @@
                 axios
                     .post("api/register", user)
                     .then(response => {
-                    /*this.showSuccess = true;
+                        console.log(response)/*this.showSuccess = true;
                     this.successMessage = "User Registeres";
                     // Copies response.data.data properties to this.currentUser
                     // without changing this.currentUser reference
@@ -109,9 +110,9 @@
             cancelRegister() {
                 //this.$emit('cancel-register')
             },
-            uploadImage(event) {
+            uploadImage(event, user) {
 
-                const URL = 'http://foobar.com/upload'; 
+                /*const URL = 'http://foobar.com/upload'; 
 
                 let data = new FormData();
                 data.append('name', 'my-picture');
@@ -121,7 +122,36 @@
                     header : {
                         'Content-Type' : 'image/png'
                     }
-                }                            
+                }  
+                
+                user.photo = event.target.files[0];*/
+                let imageName = '';
+                let imageUrl = '';
+                let imageFile = '';
+                let files = event.target.files
+
+                if(files[0] !== undefined) {
+                  imageName = files[0].name
+
+                  if(imageName.lastIndexOf('.') <= 0) {
+                    return
+                  }
+                  const fr = new FileReader ()
+                  fr.readAsDataURL(files[0])
+                  fr.addEventListener('load', () => {
+                    imageUrl = fr.result
+                    imageFile = files[0] // this is an image file that can be sent to server...
+                  })
+                } else {
+                  imageName = '';
+                  imageFile = '';
+                  imageUrl = '';
+                }
+                
+                  user.photo = imageName;
+            },
+            clearImage(user) {
+              user.photo = '';
             }
         },
     }
