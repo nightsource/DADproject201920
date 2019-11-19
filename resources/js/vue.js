@@ -10,6 +10,7 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import Logout from './components/user_components/logout';
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
@@ -18,6 +19,7 @@ const routes=[
     {path:'/login',component:Login},
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
+    {path:'/logout',component:Logout},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -30,11 +32,12 @@ const app = new Vue({
     router,
     data: {
         usertoken: undefined,
+        isLogged: false,
     },
     methods: {
         
     },
     mounted() {
-
+        
     }
 });
