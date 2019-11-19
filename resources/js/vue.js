@@ -13,11 +13,14 @@ Vue.use(VueRouter);
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
+import Users from './components/users';
+
 
 const routes=[
     {path:'/login',component:Login},
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
+    {path:'/users',component:Users},
     {path:'/',redirect:'/welcome'}
 ];
 
