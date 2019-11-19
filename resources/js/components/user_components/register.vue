@@ -67,8 +67,8 @@
         />
       </div>
 
-      <input type="file" accept="image/*" @change="uploadImage($event, user)" id="file-input">
-      <a class="btn btn-light" v-on:click.prevent="clearImage(user)">Limpar Imagem</a>
+      <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
+      <a class="btn btn-light" v-on:click.prevent="clearImage()">Limpar Imagem</a>
 
       <div class="form-group">
         <a class="btn btn-primary" v-on:click.prevent="registerUser(user)">Register</a>
@@ -86,72 +86,63 @@
                     email:"",
                     password:"",
                     nif:"",
-                    photo:"",
                     type:"u",                    
-                }
+                },
+                photo:undefined,
             }
         },
         methods: {
             registerUser(user) {
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+    
+                let formData = new FormData();
+                formData.append('name', user.name);
+                formData.append('email', user.email);
+                formData.append('password', user.password);
+                formData.append('nif', user.nif);
+                formData.append('type', user.type);
+                formData.append('file', this.photo);
+   
+                axios.post('/api/register', formData, config)
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+                
+                
                 //this.$emit('register-user', this.user)
-                axios
-                    .post("api/register", user)
-                    .then(response => {
-                        console.log(response)/*this.showSuccess = true;
-                    this.successMessage = "User Registeres";
+                //axios
+                    //.post("api/register", user)
+                    //.then(response => {
+                        //console.log(response)/*this.showSuccess = true;
+                    //this.successMessage = "User Registeres";
                     // Copies response.data.data properties to this.currentUser
                     // without changing this.currentUser reference
-                    Object.assign(this.currentUser, response.data.data);
-                    this.currentUser = null;
-                    this.editingUser = false;
+                    //Object.assign(this.currentUser, response.data.data);
+                    //this.currentUser = null;
+                    //this.editingUser = false;
                     //this.$refs.userListReference.currentUser = null*/
-                    });
+                    //});
             },
             cancelRegister() {
                 //this.$emit('cancel-register')
             },
-            uploadImage(event, user) {
-
-                /*const URL = 'http://foobar.com/upload'; 
-
-                let data = new FormData();
-                data.append('name', 'my-picture');
-                data.append('file', event.target.files[0]); 
-
-                let config = {
-                    header : {
-                        'Content-Type' : 'image/png'
-                    }
-                }  
-                
-                user.photo = event.target.files[0];*/
-                let imageName = '';
-                let imageUrl = '';
-                let imageFile = '';
+            uploadImage(event) {
                 let files = event.target.files
 
-                if(files[0] !== undefined) {
-                  imageName = files[0].name
-
-                  if(imageName.lastIndexOf('.') <= 0) {
-                    return
-                  }
-                  const fr = new FileReader ()
-                  fr.readAsDataURL(files[0])
-                  fr.addEventListener('load', () => {
-                    imageUrl = fr.result
-                    imageFile = files[0] // this is an image file that can be sent to server...
-                  })
+                if(files[0] !== undefined) {                  
+                    this.photo = files[0]         
+                    console.log(this.photo);         
                 } else {
-                  imageName = '';
-                  imageFile = '';
-                  imageUrl = '';
+                  this.photo = undefined;
                 }
-                
-                  user.photo = imageName;
             },
-            clearImage(user) {
-              user.photo = '';
+            clearImage() {
+              this.photo = undefined;
             }
         },
     }
