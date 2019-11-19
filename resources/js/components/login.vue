@@ -15,7 +15,7 @@
                 name="password" id="inputPassword"/>
         </div>
         <div class="form-group">
-            <a class="btn btn-primary" v-on:click.prevent="login">Login</a>
+            <a class="btn btn-primary" v-on:click.prevent="login(user)">Login</a>
         </div>
     </div>
 </template>
@@ -26,16 +26,20 @@
             return { 
                 user: {
                     email:"",
-                    password:""
+                    password:"",
+                    access_token:""
                 },
             }
         },
         methods: {
-            login() {
-                console.log('login clicked')
-
+            login(user) {
+                axios
+                    .post("api/login", user)
+                    .then(response => {
+                        user.access_token = response.data.access_token;
+                        console.log(user.access_token);
+                    });
             }
-
         },
     }
 </script>
