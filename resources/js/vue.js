@@ -13,14 +13,12 @@ Vue.use(VueRouter);
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
-import Profile from './components/myProfile';
 
 const routes=[
     {path:'/login',component:Login},
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
-    {path:'/',redirect:'/welcome'},
-    {path:'/profile',component:Profile}
+    {path:'/',redirect:'/welcome'}
 ];
 
 const router = new VueRouter({
@@ -31,7 +29,7 @@ const app = new Vue({
     el: '#app',
     router,
     data: {
-        
+        usertoken: undefined,
     },
     methods: {
         
