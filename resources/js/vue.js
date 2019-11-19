@@ -32,7 +32,7 @@ const app = new Vue({
     el: '#app',
     router,
     data: {
-
+        usertoken: undefined,
     },
     methods: {
         
