@@ -15,7 +15,7 @@
                 name="password" id="inputPassword"/>
         </div>
         <div class="form-group">
-            <a class="btn btn-primary" v-on:click.prevent="login(user)">Login</a>
+            <a class="btn btn-primary" v-on:click.prevent="login()">Login</a>
         </div>
     </div>
 </template>
@@ -25,19 +25,22 @@
         data: function(){
             return { 
                 user: {
-                    email:"",
-                    password:"",
-                    access_token:""
+                    email: "",
+                    password: "",
+                    access_token: ""
                 },
             }
         },
         methods: {
-            login(user) {
+            login() {
+                console.log(this.user);
                 axios
-                    .post("api/login", user)
+                    .post("api/login", this.user)
                     .then(response => {
-                        user.access_token = response.data.access_token;
-                        console.log(user.access_token);
+                        this.user.access_token = response.data.access_token;
+                        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.user.access_token;
+                                                
+                        this.$root['usertoken'] = this.user.access_token;
                     });
             }
         },
