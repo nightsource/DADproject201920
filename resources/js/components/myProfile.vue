@@ -30,9 +30,18 @@
             </div>
             <div class="form-group">
                 <label for="inputNIF">NIF</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    v-model="user.nif"
+                    name="nif"
+                    id="inputNIF"
+                    placeholder="NIF"
+                    value
+                />
             </div>
             <div class="form-group">
-                <label for="inputpassword">Password</label>
+                <button>Reset Password</button>
             </div>
             <div class="form-group">
                 <a class="btn btn-primary" v-on:click.prevent="saveUser()">Save</a>
@@ -45,11 +54,19 @@
 <script>
 export default {
     data: function() {
-    return {};
+    return { 
+                user: {
+                    email: "",
+                    password: "",
+                    access_token: ""
+                },
+            }
     },
     methods: {
         getUser(){
+            console.log('cenas')
             axios.get("api/user").then(response => {
+            console.log(response);
             this.user = response.data;
         });
         },
@@ -59,6 +76,9 @@ export default {
         cancelEdit() {
             this.$emit("cancel-edit");
         }
+    },
+    mounted(){
+        this.getUser();
     }
 }
 </script>

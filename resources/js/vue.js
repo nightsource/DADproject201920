@@ -13,11 +13,13 @@ Vue.use(VueRouter);
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
+import Profile from './components/myProfile';
 
 const routes=[
     {path:'/login',component:Login},
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
+    {path:'/profile',component:Profile},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -30,6 +32,7 @@ const app = new Vue({
     router,
     data: {
         usertoken: undefined,
+        isLogged:false,
     },
     methods: {
         

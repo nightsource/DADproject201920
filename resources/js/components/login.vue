@@ -39,8 +39,8 @@
                     .then(response => {
                         this.user.access_token = response.data.access_token;
                         window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.user.access_token;
-                                                
                         this.$root['usertoken'] = this.user.access_token;
+                        this.$root.isLogged = true;
                     });
             }
         },
