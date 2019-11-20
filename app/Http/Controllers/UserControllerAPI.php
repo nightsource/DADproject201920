@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Jsonable;
 
 use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use App\User;
 //use App\StoreUserRequest;
@@ -29,7 +30,7 @@ class UserControllerAPI extends Controller
     }
 
     public function store(Request $request)
-    {
+    {                
         $request->validate([
                 'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
                 'email' => 'required|email|unique:users,email',
@@ -37,8 +38,14 @@ class UserControllerAPI extends Controller
                 'photo' => '',
                 'nif' => ''
             ]);
+
+        $photoname = NULL;
+        if(!is_null($request->file('file')))
+            $photoname = Storage::putFile('fotos', $request->file('file'));        
+        
         $user = new User();
         $user->fill($request->all());
+        $user->photo = $photoname;
         $user->password = Hash::make($user->password);
         $user->save();
         return response()->json(new UserResource($user), 201);

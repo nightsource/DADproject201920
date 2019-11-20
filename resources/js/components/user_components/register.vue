@@ -6,7 +6,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="user.name"
+          v-model="userRegisting.name"
           name="name"
           id="inputName"
           placeholder="Fullname"
@@ -19,7 +19,7 @@
         <input
           type="email"
           class="form-control"
-          v-model="user.email"
+          v-model="userRegisting.email"
           name="email"
           id="inputEmail"
           placeholder="Email address"
@@ -36,7 +36,7 @@
             <input
                 type="password"
                 class="form-control"
-                v-model="user.password"
+                v-model="userRegisting.password"
                 name="password"
                 id="inputPassword"
                 placeholder="Password"
@@ -59,7 +59,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="user.nif"
+          v-model="userRegisting.nif"
           name="nif"
           id="inputnif"
           placeholder="NIF"
@@ -67,11 +67,11 @@
         />
       </div>
 
-      <input type="file" accept="image/*" @change="uploadImage($event, user)" id="file-input">
-      <a class="btn btn-light" v-on:click.prevent="clearImage(user)">Limpar Imagem</a>
+      <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
+      <a class="btn btn-light" v-on:click.prevent="clearImage()">Limpar Imagem</a>
 
       <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="registerUser(user)">Register</a>
+        <a class="btn btn-primary" v-on:click.prevent="registerUser()">Register</a>
         <a class="btn btn-light" v-on:click.prevent="cancelRegister()">Cancel</a>
       </div>
     </div>
@@ -81,77 +81,65 @@
     export default {
         data: function(){
             return { 
-                user: {
+                userRegisting: {
                     name:"",
                     email:"",
                     password:"",
                     nif:"",
-                    photo:"",
                     type:"u",                    
-                }
+                },
+                photo:undefined,
             }
         },
         methods: {
-            registerUser(user) {
-                //this.$emit('register-user', this.user)
-                axios
-                    .post("api/register", user)
+            registerUser() {
+                const config = {
+                    headers: { 'content-type': 'multipart/form-data' }
+                }
+    
+                let formData = new FormData();
+                formData.append('name', this.userRegisting.name);
+                formData.append('email', this.userRegisting.email);
+                formData.append('password', this.userRegisting.password);
+                formData.append('nif', this.userRegisting.nif);
+                formData.append('type', this.userRegisting.type);
+                formData.append('file', this.photo); 
+
+                axios.post('/api/register', formData, config)
+                .then(function (response) {
+                    console.log("response register")
+                    console.log(response)                   
+                }) 
+                .then(axios.post("api/login", this.userRegisting)
                     .then(response => {
-                        console.log(response)/*this.showSuccess = true;
-                    this.successMessage = "User Registeres";
-                    // Copies response.data.data properties to this.currentUser
-                    // without changing this.currentUser reference
-                    Object.assign(this.currentUser, response.data.data);
-                    this.currentUser = null;
-                    this.editingUser = false;
-                    //this.$refs.userListReference.currentUser = null*/
-                    });
+                        console.log("response login")
+                        console.log(response)
+                        console.log(this.userRegisting);
+                        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' +  response.data.access_token;
+                        
+                        this.$root.isLogged = true;         
+                        this.$root.usertoken =  response.data.access_token;
+                        this.$router.push( 'home' )
+                    }))              
+                .catch(function (error) {
+                    console.log(error)
+                });                
             },
             cancelRegister() {
-                //this.$emit('cancel-register')
+                this.$router.push( 'welcome' )
             },
-            uploadImage(event, user) {
-
-                /*const URL = 'http://foobar.com/upload'; 
-
-                let data = new FormData();
-                data.append('name', 'my-picture');
-                data.append('file', event.target.files[0]); 
-
-                let config = {
-                    header : {
-                        'Content-Type' : 'image/png'
-                    }
-                }  
-                
-                user.photo = event.target.files[0];*/
-                let imageName = '';
-                let imageUrl = '';
-                let imageFile = '';
+            uploadImage(event) {
                 let files = event.target.files
 
-                if(files[0] !== undefined) {
-                  imageName = files[0].name
-
-                  if(imageName.lastIndexOf('.') <= 0) {
-                    return
-                  }
-                  const fr = new FileReader ()
-                  fr.readAsDataURL(files[0])
-                  fr.addEventListener('load', () => {
-                    imageUrl = fr.result
-                    imageFile = files[0] // this is an image file that can be sent to server...
-                  })
+                if(files[0] !== undefined) {                  
+                    this.photo = files[0]         
+                    console.log(this.photo);         
                 } else {
-                  imageName = '';
-                  imageFile = '';
-                  imageUrl = '';
+                  this.photo = undefined;
                 }
-                
-                  user.photo = imageName;
             },
-            clearImage(user) {
-              user.photo = '';
+            clearImage() {
+              this.photo = undefined;
             }
         },
     }
