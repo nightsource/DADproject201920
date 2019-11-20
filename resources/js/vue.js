@@ -15,10 +15,16 @@ import Logout from './components/user_components/logout';
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 window.Vue = require('vue');
+
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(BootstrapVue)
+Vue.config.productionTip = false
 
 const ls = new SecureLS({ isCompression: false });
 const store = new Vuex.Store({
