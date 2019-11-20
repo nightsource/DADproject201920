@@ -39,7 +39,9 @@ class UserControllerAPI extends Controller
                 'nif' => ''
             ]);
 
-        $photoname = Storage::putFile('fotos', $request->file('file'));        
+        $photoname = NULL;
+        if(!is_null($request->file('file')))
+            $photoname = Storage::putFile('fotos', $request->file('file'));        
         
         $user = new User();
         $user->fill($request->all());
