@@ -35,7 +35,7 @@ const app = new Vue({
         isLogged: false,
     },
     methods: {
-        
+      
     },
     mounted() {
         
