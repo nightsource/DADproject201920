@@ -15,15 +15,13 @@
                     .post("api/logout")
                     .then(response => {
                         console.log(response);
-                        window.axios.defaults.headers.common['Authorization'] = '';
                         
-                        this.$root.isLogged = false;                                 
+                        this.$root.deleteToken();
                         this.$router.push( 'welcome' )
                     });
             }
         },
         mounted() {
-            console.log('cenas');
             this.logout();
         }
     }

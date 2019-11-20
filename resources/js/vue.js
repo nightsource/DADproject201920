@@ -6,14 +6,40 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
 
+import VueRouter from 'vue-router';
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import SecureLS from "secure-ls";
 import Logout from './components/user_components/logout';
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
+
+window.Vue = require('vue');
+Vue.use(VueRouter);
+Vue.use(Vuex);
+
+const ls = new SecureLS({ isCompression: false });
+const store = new Vuex.Store({
+    state: {
+        store_token: "",
+        store_isLogged: false
+    },
+    plugins: [
+      createPersistedState({
+        storage: {
+          getItem: key => ls.get(key),
+          setItem: (key, value) => ls.set(key, value),
+          removeItem: key => ls.remove(key)
+        }
+      })
+    ],
+    mutations: {
+        mut_isLogged: (state, value) => state.store_isLogged = value,
+        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = "")
+    }
+  });
 
 const routes=[
     {path:'/login',component:Login},
@@ -30,14 +56,38 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    data: {
-        usertoken: undefined,
-        isLogged: false,
+    data() {
+        return {
+            store_token: "",
+            store_isLogged: false
+          };
+    },
+    computed: {
+        getToken() {
+          return store.state.store_token;
+        },
+        isLogged() {
+          return store.state.store_isLogged;
+        },
     },
     methods: {
-      
+        setToken(token) {
+            this.store_token = token;
+            store.commit("mut_isLogged", true);
+            store.commit("mut_token", token);
+            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+        },
+        deleteToken() {
+            store.commit("mut_isLogged", false);
+            store.commit("mut_token", '');
+        },
+        setAuthorization() {          
+            console.log(store.state.store_token);
+            console.log(this.store_token);
+            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;            
+        }
     },
     mounted() {
-        
+        this.setAuthorization()
     }
 });
