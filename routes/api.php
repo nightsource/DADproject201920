@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 */
 Route::middleware('auth:api')->get('users', 'UserControllerAPI@index');
 Route::middleware('auth:api')->get('/user', function (Request $request) { return $request->user();});
-Route::get('users/{id}', 'UserControllerAPI@show');
+Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show');
 /*
 |
 |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ Route::get('users/{id}', 'UserControllerAPI@show');
 Route::post('login', 'LoginControllerAPI@login')->name('login');
 Route::post('register', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
-Route::post('users', 'UserControllerAPI@store');
+
 /*
 |
 |--------------------------------------------------------------------------

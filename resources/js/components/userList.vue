@@ -14,7 +14,8 @@
             </thead>
             <tbody>
                     <tr v-for="user in users" :key="user.id" :class="{active: currentUser === user}">
-                    <td>{{ user.photo }}</td>
+                    <td><img :src="'public/storage/app/public/fotos/' +user.photo" width="100" height="100"></td>
+                    
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.type }}</td>
@@ -36,8 +37,9 @@
         props:['users', 'currentUser'],
         data:function(){
           return{
+              // <td><img :src="'/storage/app/public/fotos/' +user.photo" width="100" height="100"></td>
           }
-        },         
+        },  
         methods:{
             editUser(user){
                 this.$emit('edit-user',user)
@@ -49,6 +51,7 @@
             
 		}
     }
+   
 
 </script>
 
