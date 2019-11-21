@@ -25,6 +25,7 @@
         "bootstrap": "^4.3.1",
         "bootstrap-vue": "^2.1.0",
         "secure-ls": "^1.2.5",
+        "true-case-path": "^2.2.1",
         "vuex": "^3.1.2",
         "vuex-persistedstate": "^2.7.0"
     }
