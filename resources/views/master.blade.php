@@ -20,7 +20,10 @@
 </head>
 
 <body>
-    <div class="container" id="app">
+<div id="app" class="container" style="
+    max-width: 90%;    
+    margin: auto;
+    margin-top: 10px;">
         @yield('content')
     </div>
 
