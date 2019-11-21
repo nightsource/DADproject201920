@@ -15,6 +15,8 @@ import Logout from './components/user_components/logout';
 import Login from './components/login';
 import Register from './components/user_components/register';
 import Welcome from './components/welcome';
+import Users from './components/users';
+
 
 window.Vue = require('vue');
 Vue.use(VueRouter);
@@ -45,6 +47,7 @@ const routes=[
     {path:'/login',component:Login},
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
+    {path:'/users',component:Users},
     {path:'/logout',component:Logout},
     {path:'/',redirect:'/welcome'}
 ];
