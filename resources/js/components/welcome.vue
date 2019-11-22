@@ -118,7 +118,7 @@ h1 {
     <div class="centered">
         <b-container>
             <b-row class="text-center">
-                <b-col><img class="logo" :src="'/media/logo.png'"> </b-col>
+                <b-col><img class="logo" :src="'/media/logo.png'"></b-col>
             </b-row>
             <b-row class="text-center">
                 <b-col>
@@ -203,7 +203,6 @@ export default {
                     console.log("cenas");
                     this.user_login.access_token = response.data.access_token;
                     this.$root.setToken(this.user_login.access_token);
-                    this.$root.setEmail(this.user_login.email);
 
                     this.$router.push('home')
                 })
