@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Jsonable;
 
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Wallet as WalletResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\User;
-//use App\StoreUserRequest;
+use App\Wallet;
 use Hash;
 
 class UserControllerAPI extends Controller
@@ -48,6 +49,12 @@ class UserControllerAPI extends Controller
         $user->photo = $photoname;
         $user->password = Hash::make($user->password);
         $user->save();
+        
+        $wallet = new Wallet();
+        $wallet->email = $request->email;
+        $wallet->balance = 0;        
+        $wallet->save();
+
         return response()->json(new UserResource($user), 201);
     }
 
