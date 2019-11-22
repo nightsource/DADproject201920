@@ -1,6 +1,4 @@
 <template>
-    <div class="jumbotron">        
-    </div>
 </template>
 
 <script type="text/javascript">    

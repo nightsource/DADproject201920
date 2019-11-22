@@ -12,10 +12,18 @@
     @yield('extrastyles')
     <!-- Latest compiled and minified CSS & JS -->
     <link rel="stylesheet" href="{{ URL::asset('css/app.css') }}">
+
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 </head>
 
 <body>
-    <div class="container" id="app">
+<div id="app" class="container" style="
+    max-width: 90%;    
+    margin: auto;
+    margin-top: 10px;">
         @yield('content')
     </div>
 
