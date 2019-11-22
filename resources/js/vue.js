@@ -19,6 +19,7 @@ import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import Users from './components/users';
 
 window.Vue = require('vue');
 
@@ -54,6 +55,7 @@ const routes=[
     //{path:'/login',component:Login},
     //{path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
+    {path:'/users',component:Users},
     {path:'/logout',component:Logout},
     {path:'/home',component:Home},
     {path:'/',redirect:'/welcome'}
