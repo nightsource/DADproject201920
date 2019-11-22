@@ -216,17 +216,22 @@ body {
     display: block;
 }
 
+.side-nav .categories .side-nav-dropdown>li>a:hover {
+    color: #FFF;
+}
+
 .side-nav .categories p {
     margin-left: 30px;
     color: #eeeeee;
     margin-top: 10px;
 }
 
-.side-nav .categories .bottom {
-    width: 230px;
+.bottom {
+    width: 100%;
     position: absolute;
     bottom: 5px;
     opacity: 0.6;
+    padding: 25px;
 }
 
 /* End dropdown menu */
@@ -589,22 +594,28 @@ body {
         <ul class="categories">
             <li class="withoutAfter"><i class="fa fa-home fa-fw"></i><a> Dashboard</a></li>
 
-            <li><i class="fa fa-th-list fa-fw"></i><a id="id100"  @click="show_transaction_sub_menu=!show_transaction_sub_menu"> Transactions <span class="num succ">2 new</span></a>
-                <ul v-if="show_transaction_sub_menu" class="side-nav-dropdown">
+            <li>
+                <i class="fa fa-th-list fa-fw"></i>
+                <a> Transactions
+                    <span class="num succ">2 new</span>
+                </a>
+                <ul class="side-nav-dropdown">
                     <li><a>List transactions</a></li>
                     <li><a>Create transaction</a></li>
                 </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
 
+            <li v-if="user.type==='a'"></li>
             <p v-if="user.type==='a'">Admin only:</p>
             <li v-if="user.type==='a'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
-            
 
-
-            <li><img class="bottom" :src="'/media/logo.png'"></li>
+            <li v-if="user.type==='o'"></li>
+            <p v-if="user.type==='o'">Operator only:</p>
+            <li v-if="user.type==='o'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
         </ul>
 
+        <img class="bottom" :src="'/media/logo.png'">
     </aside>
     <!--<b-navbar toggleable="lg" type="dark" variant="dark">
         <b-navbar-brand class="w-25" :to="'home'">
@@ -658,8 +669,7 @@ export default {
                 type: '',
                 updated_at: undefined
             },
-            userWantsToSeeProfile: false,
-            show_transaction_sub_menu: false
+            userWantsToSeeProfile: false
         }
     },
     methods: {
