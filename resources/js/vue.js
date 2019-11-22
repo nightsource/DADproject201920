@@ -12,8 +12,8 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
 import Logout from './components/user_components/logout';
-import Login from './components/login';
-import Register from './components/user_components/register';
+//import Login from './components/login';
+//import Register from './components/user_components/register';
 import Home from './components/home/home';
 import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
@@ -51,8 +51,8 @@ const store = new Vuex.Store({
   });
 
 const routes=[
-    {path:'/login',component:Login},
-    {path:'/register',component:Register},
+    //{path:'/login',component:Login},
+    //{path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
     {path:'/logout',component:Logout},
     {path:'/home',component:Home},

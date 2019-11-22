@@ -48,6 +48,7 @@ h1 {
     color: #333333;
     -webkit-font-smoothing: antialiased;
     text-align: center;
+    cursor: pointer;
 }
 
 .logo {
@@ -130,28 +131,28 @@ h1 {
 
             <b-row class="text-center">
                 <b-col><a v-b-modal.modal-login class="head-link">Login</a></b-col>
-                <b-col><a v-b-modal.modal-register class="head-link">Register</a> </b-col>
+                <b-col>
+                    <p v-b-modal.modal-register class="head-link">Register</p>
+                </b-col>
 
-                <b-modal id="modal-login" size="mg" title="Please do login your ass mothefocker" centered cancel-disabled ok-disabled modal-cancel no-stacking>
-                    <user-login>
+                <b-modal id="modal-login" size="mg" title="" centered cancel-disabled ok-disabled modal-cancel no-stacking>
+                    <user-login :user_login=user_login>
                     </user-login>
 
                     <template v-slot:modal-footer="{ ok, cancel }">
-                        <b-button size="sm" variant="success" @click="register();ok()">Login</b-button>
+                        <b-button size="sm" variant="success" @click="loginUser()">Login</b-button>
 
                         <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
                     </template>
 
                 </b-modal>
 
-                <b-modal id="modal-register" size="mg" title="Please do register your self mothefocker" centered cancel-disabled ok-disabled modal-cancel no-stacking>
-                    <user-register 
-                    :user_registering=user_registering
-                    :user_regestering_photo=user_regestering_photo>
+                <b-modal id="modal-register" size="mg" title="" centered cancel-disabled ok-disabled modal-cancel no-stacking>
+                    <user-register ref="userRegisterComponent" :user_register=user_register>
                     </user-register>
 
                     <template v-slot:modal-footer="{ ok, cancel }">
-                        <b-button size="sm" variant="success" @click="registerUser();ok()">Register</b-button>
+                        <b-button size="sm" variant="success" @click="registerUser()">Register</b-button>
 
                         <b-button size="sm" variant="danger" @click="cancel()">Cancel</b-button>
                     </template>
@@ -166,20 +167,27 @@ h1 {
 <script>
 import LoginComponent from "./login";
 import RegisterComponent from "./user_components/register";
-//import NavbarComponent from "./home/navbar";
 
 export default {
     data: function () {
         return {
             is_user_logged: this.$root.isLogged,
-            user_registering: {
+            user_login: {
+                email: "",
+                password: "",
+                access_token: "",
+                response: ""
+            },
+            user_register: {
                 name: "",
                 email: "",
                 password: "",
+                retyped_password: "",
+                photo: undefined,
                 nif: "",
                 type: "u",
-            },
-            user_regestering_photo: undefined
+                response: ""
+            }
         }
     },
     methods: {
@@ -187,41 +195,62 @@ export default {
             if (this.is_user_logged)
                 this.$router.push('home')
         },
-        registerUser() {
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }
+        loginUser() {
+            console.log("login")
+            axios
+                .post("api/login", this.user_login)
+                .then(response => {
+                    console.log("cenas");
+                    this.user_login.access_token = response.data.access_token;
+                    this.$root.setToken(this.user_login.access_token);
+                    this.$root.setEmail(this.user_login.email);
 
-            let formData = new FormData();
-            formData.append('name', this.user_registering.name);
-            formData.append('email', this.user_registering.email);
-            formData.append('password', this.user_registering.password);
-            formData.append('nif', this.user_registering.nif);
-            formData.append('type', this.user_registering.type);
-            formData.append('file', this.user_regestering_photo);
-
-            axios.post('/api/register', formData, config)
-                .then(function (response) {
-                    console.log("response register")
-                    console.log(response)
+                    this.$router.push('home')
                 })
-                .then(axios.post("api/login", this.user_registering)
-                    .then(response => {
-                        console.log("response login")
-                        console.log(response)
-                        console.log(this.user_registering);
-                        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
+                .catch((error) => {
+                    console.log(error.response.data.msg)
+                    console.log(this.user_login.response)
 
-                        this.$root.isLogged = true;
-                        this.$root.usertoken = response.data.access_token;
-                        this.$router.push('home')
-                    }))
-                .catch(function (error) {
-                    console.log(error)
+                    this.user_login.response = error.response.data.msg
                 });
-        }
+        },
+        registerUser() {
+            if (this.$refs.userRegisterComponent.canRegister()) {
+                const config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                }
+
+                let formData = new FormData();
+                formData.append('name', this.user_register.name);
+                formData.append('email', this.user_register.email);
+                formData.append('password', this.user_register.password);
+                formData.append('nif', this.user_register.nif);
+                formData.append('type', this.user_register.type);
+                formData.append('file', this.user_register.photo);
+
+                axios.post('/api/register', formData, config)
+                    .then(response => {
+                        this.user_login.email = this.user_register.email;
+                        this.user_login.password = this.user_register.password;
+
+                        this.loginUser();
+                    })
+                    .catch((error) => {
+                        const cenas = error.response.data.errors;
+                        
+                        let str = '';
+                        let value = '';
+                        for (value in cenas) {
+                            str = str + "\n" + value;
+                        }
+                        this.user_register.response = str
+                    });
+            } else {
+                this.user_register.response = "Please fill the fields and correct the errors"
+            }
+        },
     },
     components: {
         "user-login": LoginComponent,
