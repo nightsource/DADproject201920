@@ -6,7 +6,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="userRegisting.name"
+          v-model="user_registering.name"
           name="name"
           id="inputName"
           placeholder="Fullname"
@@ -19,7 +19,7 @@
         <input
           type="email"
           class="form-control"
-          v-model="userRegisting.email"
+          v-model="user_registering.email"
           name="email"
           id="inputEmail"
           placeholder="Email address"
@@ -36,7 +36,7 @@
             <input
                 type="password"
                 class="form-control"
-                v-model="userRegisting.password"
+                v-model="user_registering.password"
                 name="password"
                 id="inputPassword"
                 placeholder="Password"
@@ -59,7 +59,7 @@
         <input
           type="text"
           class="form-control"
-          v-model="userRegisting.nif"
+          v-model="user_registering.nif"
           name="nif"
           id="inputnif"
           placeholder="NIF"
@@ -69,65 +69,17 @@
 
       <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
       <a class="btn btn-light" v-on:click.prevent="clearImage()">Limpar Imagem</a>
-
-      <div class="form-group">
-        <a class="btn btn-primary" v-on:click.prevent="registerUser()">Register</a>
-        <a class="btn btn-light" v-on:click.prevent="cancelRegister()">Cancel</a>
-      </div>
     </div>
 </template>
 
 <script type="text/javascript">    
-    export default {
+    export default {        
+        props:['user_registering', 'photo'],
         data: function(){
             return { 
-                userRegisting: {
-                    name:"",
-                    email:"",
-                    password:"",
-                    nif:"",
-                    type:"u",                    
-                },
-                photo:undefined,
             }
         },
-        methods: {
-            registerUser() {
-                const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
-                }
-    
-                let formData = new FormData();
-                formData.append('name', this.userRegisting.name);
-                formData.append('email', this.userRegisting.email);
-                formData.append('password', this.userRegisting.password);
-                formData.append('nif', this.userRegisting.nif);
-                formData.append('type', this.userRegisting.type);
-                formData.append('file', this.photo); 
-
-                axios.post('/api/register', formData, config)
-                .then(function (response) {
-                    console.log("response register")
-                    console.log(response)                   
-                }) 
-                .then(axios.post("api/login", this.userRegisting)
-                    .then(response => {
-                        console.log("response login")
-                        console.log(response)
-                        console.log(this.userRegisting);
-                        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' +  response.data.access_token;
-                        
-                        this.$root.isLogged = true;         
-                        this.$root.usertoken =  response.data.access_token;
-                        this.$router.push( 'home' )
-                    }))              
-                .catch(function (error) {
-                    console.log(error)
-                });                
-            },
-            cancelRegister() {
-                this.$router.push( 'welcome' )
-            },
+        methods: {            
             uploadImage(event) {
                 let files = event.target.files
 

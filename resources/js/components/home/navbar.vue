@@ -12,20 +12,19 @@
 
             <!-- logged -->
             <b-navbar-nav v-if="isLogged">
-              <b-nav-item :to="'profile'">Profile</b-nav-item>
-              <b-nav-item-dropdown right v-if="!isLogged">
+              <b-nav-item-dropdown right>
                 <template v-slot:button-content>
-                  <em>User</em>
+                  <em>{{ username }}</em>
                 </template>
-                <b-dropdown-item :to="'profile'" >Profile</b-dropdown-item>
-                <b-dropdown-item :to="'logout'">Sign Out</b-dropdown-item>
+                <b-dropdown-item v-on:click.prevent="$emit('user_wants_to_see_profile')">My Profile</b-dropdown-item>
+                <b-dropdown-item v-on:click.prevent="$emit('user_wants_to_logout')">Sign Out</b-dropdown-item>
               </b-nav-item-dropdown>
             </b-navbar-nav>
 
             <!-- not logged -->
             <b-navbar-nav v-if="!isLogged">
-              <b-nav-item v-on:click.prevent="$emit('user_Wants_To_Login')">Login</b-nav-item>
-              <b-nav-item v-on:click.prevent="$emit('user_Wants_To_Register')">Register</b-nav-item>
+              <b-nav-item v-on:click.prevent="$emit('user_wants_to_login')">Login</b-nav-item>
+              <b-nav-item v-on:click.prevent="$emit('user_wants_to_register')">Register</b-nav-item>
             </b-navbar-nav>
 
           </b-navbar-nav>
@@ -36,13 +35,21 @@
 
 <script>
 export default {
+    props:['isLogged','username'],
     data: function(){
             return {
             }
         },
-    methods: {         
+    methods: { 
+        cenas() {
+            console.log(this.username);
+            console.log(this.isLogged);
+        },    
     },
-  components: {
-  },
+    components: {
+    },
+    mounted() {
+        this.cenas()
+    }
 }
 </script>

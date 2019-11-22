@@ -14,6 +14,7 @@ import SecureLS from "secure-ls";
 import Logout from './components/user_components/logout';
 import Login from './components/login';
 import Register from './components/user_components/register';
+import Home from './components/home/home';
 import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -30,6 +31,7 @@ const ls = new SecureLS({ isCompression: false });
 const store = new Vuex.Store({
     state: {
         store_token: "",
+        store_mail: "",
         store_isLogged: false
     },
     plugins: [
@@ -43,7 +45,8 @@ const store = new Vuex.Store({
     ],
     mutations: {
         mut_isLogged: (state, value) => state.store_isLogged = value,
-        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = "")
+        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = ""),
+        mut_email: (state, value) => value ? (state.store_mail = value) : (state.store_mail = "")
     }
   });
 
@@ -52,6 +55,7 @@ const routes=[
     {path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
     {path:'/logout',component:Logout},
+    {path:'/home',component:Home},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -65,12 +69,16 @@ const app = new Vue({
     data() {
         return {
             store_token: "",
+            store_email: "",
             store_isLogged: false
           };
     },
     computed: {
         getToken() {
           return store.state.store_token;
+        },
+        getEmail() {
+          return store.state.store_mail;
         },
         isLogged() {
           return store.state.store_isLogged;
@@ -83,17 +91,20 @@ const app = new Vue({
             store.commit("mut_token", token);
             window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         },
+        setEmail(email) {
+            this.store_email = email;
+            store.commit("mut_email", email);
+        },
         deleteToken() {
             store.commit("mut_isLogged", false);
             store.commit("mut_token", '');
         },
-        setAuthorization() {          
-            console.log(store.state.store_token);
-            console.log(this.store_token);
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;            
+        setAuthorization() {      
+            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;   
+            //this.store_email = store.state.store_mail;  
         }
     },
-    mounted() {
+    created() {
         this.setAuthorization()
     }
 });
