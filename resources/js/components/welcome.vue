@@ -131,11 +131,13 @@ h1 {
 
             <b-row class="text-center">
                 <b-col><a v-b-modal.modal-login class="head-link">Login</a></b-col>
-                <b-col>
-                    <p v-b-modal.modal-register class="head-link">Register</p>
-                </b-col>
+                <b-col><a v-b-modal.modal-register class="head-link">Register</a></b-col>
 
                 <b-modal id="modal-login" size="mg" title="" centered cancel-disabled ok-disabled modal-cancel no-stacking>
+                    <div style="margin-bottom: 15px">
+                        Don't have an account? <b-link v-b-modal.modal-register>Click here</b-link><br>
+                    </div>
+
                     <user-login :user_login=user_login>
                     </user-login>
 
@@ -148,6 +150,10 @@ h1 {
                 </b-modal>
 
                 <b-modal id="modal-register" size="mg" title="" centered cancel-disabled ok-disabled modal-cancel no-stacking>
+                    <div style="margin-bottom: 15px">
+                        Already have an account? <b-link v-b-modal.modal-login>Click here</b-link><br>
+                    </div>
+
                     <user-register ref="userRegisterComponent" :user_register=user_register>
                     </user-register>
 
@@ -238,7 +244,7 @@ export default {
                     })
                     .catch((error) => {
                         const cenas = error.response.data.errors;
-                        
+
                         let str = '';
                         let value = '';
                         for (value in cenas) {
