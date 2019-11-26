@@ -244,11 +244,13 @@ export default {
                     })
                     .catch((error) => {
                         const cenas = error.response.data.errors;
-
+                        console.log('cenas',cenas)
+                        // console.log(cenas.name[0])
                         let str = '';
                         let value = '';
-                        for (value in cenas) {
-                            str = str + "\n" + value;
+
+                        for (value of Object.keys(cenas)) {
+                            str = str + "<br>" + cenas[value];
                         }
                         this.user_register.response = str
                     });

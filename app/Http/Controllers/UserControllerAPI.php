@@ -55,10 +55,8 @@ class UserControllerAPI extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'email' => 'required|email|unique:users,email',
-            'type' => 'required',
-            'photo' => '',
-            'nif' => ''
+            'email' => 'required|email|unique:users,email,'.$id,
+            'type' => 'required'
         ]);
         $user = User::findOrFail($id);
         $user->update($request->all());

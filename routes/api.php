@@ -38,7 +38,7 @@ Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 | PUTs
 |--------------------------------------------------------------------------
 */
-Route::put('users/{id}', 'UserControllerAPI@update');
+Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
 
 /*
 |

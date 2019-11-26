@@ -36,14 +36,39 @@
 
         <img class="bottom" :src="'/media/logo.png'">
     </aside>-->
-
-
         <div class="headerTitle">
             <span>My Profile</span>
         </div>
+        <b-form>
+            <b-alert v-if="showSuccess" show variant="success">{{successMessage}}</b-alert>            
+            <b-alert v-if="showFailure" show variant="danger">{{failMessage}}</b-alert>
+
+            <b-form-group label="Name:">
+                <b-form-input id="input_name" :state="val_username" v-model="user.name" type="text" required placeholder="Enter name"></b-form-input>
+
+                <b-form-invalid-feedback :state="val_username">
+                    Your username must be more then 3 characters long and only contain letters and spaces
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="val_username">
+
+                </b-form-valid-feedback>
+
+                <b-form-group label="Email:">
+                <b-form-input id="input_email" :state="val_email" v-model="user.email" type="email" required placeholder="Enter email"></b-form-input>
+
+                <b-form-invalid-feedback :state="val_email">
+                    Your email is invalid
+                </b-form-invalid-feedback>
+                <b-form-valid-feedback :state="val_email">
+
+                </b-form-valid-feedback>
+            </b-form-group>
+            </b-form-group>
+
+        </b-form>
         <div class="body">
             <div class="form-group">
-                <label for="inputName">Name</label>
+                <!-- <label for="inputName">Name</label>
                 <input
                     type="text"
                     class="form-control"
@@ -51,8 +76,8 @@
                     name="name"
                     id="inputName"
                     placeholder="Fullname"
-                    value
-                />
+                    state="val_username"
+                /> -->
             </div>
             <div class="form-group">
                 <label for="inputEmail">Email</label>
@@ -63,7 +88,6 @@
                     name="email"
                     id="inputEmail"
                     placeholder="Email"
-                    value
                 />
             </div>
             <div class="form-group">
@@ -75,13 +99,11 @@
                     name="nif"
                     id="inputNIF"
                     placeholder="NIF"
-                    value
                 />
             </div>
 
             <div class="form-group">
                 <a class="btn btn-primary" v-on:click.prevent="saveUser()">Save</a>
-                <a class="btn btn-light" v-on:click.prevent="cancelEdit()">Cancel</a>
             </div>
         </div>
     </div>
@@ -91,13 +113,17 @@
 export default {
     data: function() {
     return { 
-                user: {
-                    name: "",
-                    email: "",
-                    password: "",
-                    access_token: ""
-                },
-            }
+        showSuccess: false,
+        showFailure: false,
+        successMessage: '',
+        failMessage: '',
+        user: {
+            name: "",
+            email: "",
+            password: "",
+            access_token: ""
+        },
+    }
     },
     methods: {
         getUser(){
@@ -107,30 +133,25 @@ export default {
         });
         },
         saveUser: function(){
-            this.currentUser=this.user;         
-            axios.put('api/users/'+this.currentUser.id,this.currentUser)
+            if(this.canUpdate()){
+                axios.put('api/users/'+this.user.id,this.user)
                 .then(response=>{
                     console.log('response to save ',response)
                     this.showSuccess = true;
-                    this.successMessage = 'User Saved';
-                    Object.assign(this.currentUser, response.data.data);
-                    this.currentUser = null;
-                    this.editingUser = false;
-                    this.$refs.userListReference.currentUser = null;
+                    this.successMessage = 'User saved successfully!';
+                    Object.assign(this.user, response.data.data);
                 });
+            }
         },
-        cancelEdit() {
-            this.$emit("cancel-edit");
+        canUpdate(){
+            return (this.val_username);
         }
     },
     computed: {
         val_username() {
-            console.log('valUserName ',this.user)
-            //TO-DO - falta verificação de letras e espaços
             if (this.user.name == '')
-                return null;
-
-            return this.user.name.length > 2 && this.user.name.length < 255
+                return false;
+            return this.user.name.length > 2 && this.user.name.length < 255;
         },
         val_email() {
             if (this.user.email == '')
@@ -147,7 +168,7 @@ export default {
                 return true;
 
             return false;
-        },
+        }
     },
     mounted(){
         this.getUser();
