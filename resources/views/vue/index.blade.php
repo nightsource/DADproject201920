@@ -4,13 +4,17 @@
 
 @section('content')
 
-<router-link v-if="isLogged" to="/home">Home</router-link>
-<router-link v-if="!isLogged" to="/login">Login</router-link>
-<router-link v-if="isLogged" to="/logout">Logout</router-link>
-<router-link v-if="!isLogged" to="/register">Register</router-link>
+<router-link to="/home">Home</router-link>
+<router-link to="/login">Login</router-link>
+<router-link to="/register">Register</router-link>
+<router-link v-if="isLogged" to="/profile">My Profile</router-link>
+
+
 <router-view></router-view>
+
 
 @endsection
 @section('pagescript')
-<script src="js/vue.js"></script>
- @stop  
+<script src="js/vue.js">
+</script>
+ @stop 
