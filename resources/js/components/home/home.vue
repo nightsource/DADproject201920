@@ -617,6 +617,8 @@ body {
 
         <img class="bottom" :src="'/media/logo.png'">
     </aside>
+
+    
     <!--<b-navbar toggleable="lg" type="dark" variant="dark">
         <b-navbar-brand class="w-25" :to="'home'">
             <b-img class="w-50" :src="'/media/logo.png'"></b-img>
