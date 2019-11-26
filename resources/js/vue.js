@@ -103,6 +103,9 @@ const app = new Vue({
               window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;
         },
     },
+    components: {
+      "nav-bar": NavBar
+    },
     created() {
         this.setAuthorization()
     }
