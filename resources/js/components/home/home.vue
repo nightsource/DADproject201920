@@ -608,7 +608,7 @@ body {
 
             <li v-if="user.type==='a'"></li>
             <p v-if="user.type==='a'">Admin only:</p>
-            <li v-if="user.type==='a'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
+            <li  @click="user_users" v-if="user.type==='a'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
 
             <li v-if="user.type==='o'"></li>
             <p v-if="user.type==='o'">Operator only:</p>
