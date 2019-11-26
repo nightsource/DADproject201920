@@ -11,13 +11,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\User;
+use App\Wallet;
 use Hash;
 
 class WalletControllerAPI extends Controller
 {  
-    public function show($email)
+    public function index(Request $request)
     {
-        return new WalletResource(Wallet::where('email', '=', $email)->firstOrFail());
+        if ($request->has('page')) {
+            return WalletResource::collection(Wallet::paginate(25));
+        } else {
+            return WalletResource::collection(Wallet::all());
+        }
+    }
+
+    public function show(Request $request)
+    {
+        return new WalletResource(Wallet::where('email', '=', $request->user()->email)->firstOrFail());
     }
 
     public function store($email)

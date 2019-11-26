@@ -3,7 +3,6 @@
 @section('title', 'Virtual Wallet Application')
 
 @section('content')
-
 <router-view></router-view>
 
 @endsection

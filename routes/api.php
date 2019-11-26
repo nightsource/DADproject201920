@@ -19,9 +19,12 @@ use Illuminate\Http\Request;
 | GETs
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:api')->get('users', 'UserControllerAPI@index');
+Route::middleware(['auth:api', 'admin:api'])->get('users', 'UserControllerAPI@index');
 Route::middleware('auth:api')->get('/user', function (Request $request) { return $request->user();});
-Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show');
+Route::middleware(['auth:api', 'admin:api'])->get('users/{id}', 'UserControllerAPI@show');
+
+Route::middleware(['auth:api', 'admin:api'])->get('wallets', 'WalletControllerAPI@index');
+Route::middleware('auth:api')->get('/wallet', 'WalletControllerAPI@show');
 /*
 |
 |--------------------------------------------------------------------------
@@ -31,6 +34,8 @@ Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show');
 Route::post('login', 'LoginControllerAPI@login')->name('login');
 Route::post('register', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
+
+Route::middleware(['auth:api', 'operator:api'])->post('registerincomebyoperator', 'TransactionControllerAPI@registerIncomeByOperator');
 
 /*
 |

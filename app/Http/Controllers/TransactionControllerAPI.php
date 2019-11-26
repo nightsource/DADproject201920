@@ -1,21 +1,21 @@
-
-
-    <?php
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Jsonable;
 
+
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Wallet as WalletResource;
 use App\Http\Resources\Transaction as TransactionResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 use App\User;
-//use App\StoreUserRequest;
-use Hash;
+use App\Wallet;
+use App\Transaction;
 
 class TransactionControllerAPI extends Controller
 {
@@ -38,35 +38,51 @@ class TransactionControllerAPI extends Controller
     {          
         $request->validate([
                 'email' => 'required',
-                'amount' => 'required',
-                'type' => '',
-                'source_description' => '',
-                'iban' => ''
+                'type_payment' => 'required|in:bt,c',
+                'iban' => 'sometimes|regex:/^[A-Za-z]{2}[0-9]{23}+$/',
+                'value' => 'required|min:0|max:5000'
             ]);
+            
+        $userwallet = Wallet::where('email', '=', $request->email)->first();
+        
+        //insert
+        $transaction = new Transaction();        
+        $transaction->fill($request->all());
 
-        $user = User::find($request->email);
+        $transaction->wallet_id = $userwallet->id;
+        $transaction->category_id = 29;
+        $transaction->transfer = 0;
+        $transaction->start_balance = $userwallet->balance;
+        $transaction->end_balance = $userwallet->balance + $request->value;        
+        $transaction->type = 'i';      
+        $transaction->date = Carbon::now();    
+                  
+        $transaction->save();
 
+        //update wallet
+        $userwallet->balance = $userwallet->balance + $request->value;
+        $userwallet->save();
     }
 
     public function store(Request $request)
     {                
         $request->validate([
-                'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-                'email' => 'required|email|unique:users,email',
-                'type' => '',
-                'photo' => '',
-                'nif' => ''
+                'wallet_id' => 'required',
+                'type' => 'required',
+                'iban' => 'sometimes|regex:/^[A-Za-z]{2}[0-9]{23}+$/',
+                'category' => 'required',
+                'start_balance' => 'required',
+                'end_balance' => 'required',
+                'amount' => 'required|between:0.01,5000.00'
             ]);
 
         $photoname = NULL;
         if(!is_null($request->file('file')))
             $photoname = Storage::putFile('fotos', $request->file('file'));        
         
-        $user = new User();
-        $user->fill($request->all());
-        $user->photo = $photoname;
-        $user->password = Hash::make($user->password);
-        $user->save();
-        return response()->json(new UserResource($user), 201);
+        $transaction = new Transaction();
+        $transaction->fill($request->all());
+        $transaction->save();
+        return response()->json(new TransactionResource($transaction), 201);
     }
 }

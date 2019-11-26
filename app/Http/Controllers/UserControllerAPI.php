@@ -18,6 +18,8 @@ class UserControllerAPI extends Controller
 {
     public function index(Request $request)
     {
+        
+
         if ($request->has('page')) {
             return UserResource::collection(User::paginate(25));
         } else {
@@ -51,7 +53,8 @@ class UserControllerAPI extends Controller
         $user->save();
         
         $wallet = new Wallet();
-        $wallet->email = $request->email;
+        $wallet->id = $user->id;        
+        $wallet->email = $user->email;
         $wallet->balance = 0;        
         $wallet->save();
 
