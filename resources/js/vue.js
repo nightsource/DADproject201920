@@ -21,6 +21,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Users from './components/users';
 import Profile from './components/user_components/profile';
+import NavBar from './components/home/navbar';
 
 window.Vue = require('vue');
 
@@ -101,6 +102,9 @@ const app = new Vue({
             if(store.state.store_token != "") 
               window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;
         },
+    },
+    components: {
+      "nav-bar": NavBar
     },
     created() {
         this.setAuthorization()
