@@ -64,7 +64,6 @@ export default {
     },
     methods: {
         getUser(){
-            console.log('cenas')
             axios.get("api/user").then(response => {
             console.log(response);
             this.user = response.data;

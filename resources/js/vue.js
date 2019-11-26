@@ -6,20 +6,54 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
 
-import Login from './components/login';
-import Register from './components/user_components/register';
+import VueRouter from 'vue-router';
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
+import SecureLS from "secure-ls";
+import Logout from './components/user_components/logout';
+//import Login from './components/login';
+//import Register from './components/user_components/register';
+import Home from './components/home/home';
 import Welcome from './components/welcome';
-import Profile from './components/myProfile';
+import BootstrapVue from 'bootstrap-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import Users from './components/users';
+
+window.Vue = require('vue');
+
+Vue.use(VueRouter);
+Vue.use(Vuex);
+Vue.use(BootstrapVue)
+Vue.config.productionTip = false
+
+const ls = new SecureLS({ isCompression: false });
+const store = new Vuex.Store({
+    state: {
+        store_token: ""
+    },
+    plugins: [
+      createPersistedState({
+        storage: {
+          getItem: key => ls.get(key),
+          setItem: (key, value) => ls.set(key, value),
+          removeItem: key => ls.remove(key)
+        }
+      })
+    ],
+    mutations: {
+        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = "")
+    }
+  });
 
 const routes=[
-    {path:'/login',component:Login},
-    {path:'/register',component:Register},
+    //{path:'/login',component:Login},
+    //{path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
-    {path:'/profile',component:Profile},
+    {path:'/users',component:Users},
+    {path:'/logout',component:Logout},
+    {path:'/home',component:Home},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -30,14 +64,43 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    data: {
-        usertoken: undefined,
-        isLogged:false,
+    data() {
+        return {
+            store_token: ""
+          };
+    },
+    computed: {
+        getToken() {
+          return store.state.store_token;
+        },
+        isLogged() {
+          return store.state.store_token != "";
+        },        
     },
     methods: {
-        
-    },
-    mounted() {
+        setToken(token) {
+            this.store_token = token;
+            store.commit("mut_token", token);
+            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
+            axios
+                .get('/api/user/')
+                .then(response => {       
+                    this.user_logged = response.data;
+                  })
+                  .catch((error) => {
+                      console.log(error.response.data.msg)
+                  });
+        },
+        deleteToken() {
+            store.commit("mut_token", '');
+        },
+        setAuthorization() {    
+            if(store.state.store_token != "") 
+              window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;
+        },
+    },
+    created() {
+        this.setAuthorization()
     }
 });

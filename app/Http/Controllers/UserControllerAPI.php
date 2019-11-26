@@ -18,7 +18,7 @@ class UserControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->has('page')) {
-            return UserResource::collection(User::paginate(5));
+            return UserResource::collection(User::paginate(25));
         } else {
             return UserResource::collection(User::all());
         }
@@ -39,7 +39,9 @@ class UserControllerAPI extends Controller
                 'nif' => ''
             ]);
 
-        $photoname = Storage::putFile('fotos', $request->file('file'));        
+        $photoname = NULL;
+        if(!is_null($request->file('file')))
+            $photoname = Storage::putFile('fotos', $request->file('file'));        
         
         $user = new User();
         $user->fill($request->all());
