@@ -7,12 +7,12 @@
             <div class="info">
                 <h3><a>{{user.name}}</a></h3>
                 <p>{{user.email}}</p>
-                <a href="#/profile">My Profile</a>
+                <router-link to="/profile">My Profile</router-link>
             </div>
         </div>
 
         <ul class="categories">
-            <li class="withoutAfter"><i class="fa fa-home fa-fw"></i><a href="#/home">Dashboard</a></li>
+            <li class="withoutAfter"><i class="fa fa-home fa-fw"></i><router-link to="/home">Dashboard</router-link></li>
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
@@ -28,11 +28,11 @@
 
             <li v-if="user.type==='a'"></li>
             <p v-if="user.type==='a'">Admin only:</p>
-            <li v-if="user.type==='a'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
+            <li v-if="user.type==='a'"><i class="fa fa fa-users fa-fw"></i><router-link to="/users">Users</router-link></li>
 
             <li v-if="user.type==='o'"></li>
             <p v-if="user.type==='o'">Operator only:</p>
-            <li v-if="user.type==='o'"><i class="fa fa fa-users fa-fw"></i><a> Users</a></li>
+            <li v-if="user.type==='o'"><i class="fa fa fa-users fa-fw"></i><router-link to="/users">Users</router-link></li>
         </ul>
 
         <img class="bottom" :src="'/media/logo.png'">
