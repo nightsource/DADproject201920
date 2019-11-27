@@ -30,17 +30,6 @@ class WalletControllerAPI extends Controller
         return new WalletResource(Wallet::where('email', '=', $request->user()->email)->firstOrFail());
     }
 
-    public function store($email)
-    {       
-        //this is a automatic request from when a user is created                   
-        $wallet = new Wallet();        
-        $wallet->email = $email;
-        $wallet->balance = 0;
-        $wallet->save();
-
-        return response()->json(new WalletResource($wallet), 201);
-    }
-
     //duvida se a procura é por id ou por email
     public function update(Request $request)
     {

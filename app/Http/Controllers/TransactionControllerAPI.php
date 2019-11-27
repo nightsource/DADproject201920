@@ -40,7 +40,7 @@ class TransactionControllerAPI extends Controller
                 'email' => 'required',
                 'type_payment' => 'required|in:bt,c',
                 'iban' => 'sometimes|regex:/^[A-Za-z]{2}[0-9]{23}+$/',
-                'value' => 'required|min:0|max:5000'
+                'value' => 'required|numeric|between:0.01,5000.00'
             ]);
             
         $userwallet = Wallet::where('email', '=', $request->email)->first();
@@ -59,9 +59,9 @@ class TransactionControllerAPI extends Controller
                   
         $transaction->save();
 
-        //update wallet
         $userwallet->balance = $userwallet->balance + $request->value;
         $userwallet->save();
+        return response()->json(new TransactionResource($transaction), 201);
     }
 
     public function store(Request $request)

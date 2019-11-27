@@ -52,11 +52,13 @@ class UserControllerAPI extends Controller
         $user->password = Hash::make($user->password);
         $user->save();
         
-        $wallet = new Wallet();
-        $wallet->id = $user->id;        
-        $wallet->email = $user->email;
-        $wallet->balance = 0;        
-        $wallet->save();
+        if($user->type == 'u') {
+            $wallet = new Wallet();
+            $wallet->id = $user->id;        
+            $wallet->email = $user->email;
+            $wallet->balance = 0;        
+            $wallet->save();
+        }
 
         return response()->json(new UserResource($user), 201);
     }
