@@ -19,9 +19,19 @@ use Illuminate\Http\Request;
 | GETs
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth:api')->get('users', 'UserControllerAPI@index');
-Route::middleware('auth:api')->get('/user', function (Request $request) { return $request->user();});
-Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show');
+Route::middleware('auth:api')->get('users', 'UserControllerAPI@index'); //admin only
+Route::middleware('auth:api')->get('user', 'UserControllerAPI@get');
+Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show'); //only the user can access is user
+
+Route::middleware('auth:api')->get('wallets', 'WalletControllerAPI@index'); //admin only
+Route::middleware('auth:api')->get('user/wallet', 'WalletControllerAPI@get'); //only the user can access is wallet
+
+
+Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index'); //admin only
+Route::middleware('auth:api')->get('user/movements', 'MovementControllerAPI@get'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/income', 'MovementControllerAPI@getIncome'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/expense', 'MovementControllerAPI@getExpense'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
 /*
 |
 |--------------------------------------------------------------------------

@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Jsonable;
 
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Wallet as WalletResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\User;
-//use App\StoreUserRequest;
+use App\Wallet;
 use Hash;
 
 class UserControllerAPI extends Controller
@@ -22,11 +23,16 @@ class UserControllerAPI extends Controller
         } else {
             return UserResource::collection(User::all());
         }
-    }    
+    }     
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        return new UserResource(User::find($id));
+        return $request->user()->id == $id ? new UserResource(User::find($id)) : response()->json("User not found", 404);
+    }
+
+    public function get(Request $request)
+    {
+        return $request->user();
     }
 
     public function store(Request $request)
