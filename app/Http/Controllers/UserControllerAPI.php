@@ -26,8 +26,8 @@ class UserControllerAPI extends Controller
     }     
 
     public function show(Request $request, $id)
-    {
-        return $request->user()->id == $id || $request->user()->type == 'a' ? new UserResource(User::find($id)) : response()->json("User not found", 404);
+    {        
+        return $request->user()->id == $id || $request->user()->type == 'a' ? new UserResource(User::find($id)) : response()->json("404 User not found", 404);        
     }
 
     public function get(Request $request)

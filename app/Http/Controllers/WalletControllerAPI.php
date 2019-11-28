@@ -31,8 +31,7 @@ class WalletControllerAPI extends Controller
     }
 
     public function store($email)
-    {       
-        //this is a automatic request from when a user is created                   
+    {                       
         $wallet = new Wallet();        
         $wallet->email = $email;
         $wallet->balance = 0;
@@ -48,7 +47,6 @@ class WalletControllerAPI extends Controller
         return new WalletResource($wallet);
     }
 
-    //duvida se a procura é por id ou por email
     public function update(Request $request)
     {
         $request->validate([
