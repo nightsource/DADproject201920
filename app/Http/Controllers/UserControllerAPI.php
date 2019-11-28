@@ -25,7 +25,7 @@ class UserControllerAPI extends Controller
         } else {
             return UserResource::collection(User::all());
         }
-    }    
+    }   
 
     public function show($id)
     {
