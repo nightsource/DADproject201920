@@ -19,7 +19,7 @@ class UserControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->has('page')) {
-            return UserResource::collection(User::paginate(25));
+            return UserResource::collection(User::paginate(10));
         } else {
             return UserResource::collection(User::all());
         }
@@ -27,7 +27,7 @@ class UserControllerAPI extends Controller
 
     public function show(Request $request, $id)
     {
-        return $request->user()->id == $id ? new UserResource(User::find($id)) : response()->json("User not found", 404);
+        return $request->user()->id == $id || $request->user()->type == 'a' ? new UserResource(User::find($id)) : response()->json("User not found", 404);
     }
 
     public function get(Request $request)
@@ -54,6 +54,15 @@ class UserControllerAPI extends Controller
         $user->photo = $photoname;
         $user->password = Hash::make($user->password);
         $user->save();
+        
+        if($user->type == 'u') {
+            $wallet = new Wallet();
+            $wallet->id = $user->id;        
+            $wallet->email = $user->email;
+            $wallet->balance = 0;        
+            $wallet->save();
+        }
+
         return response()->json(new UserResource($user), 201);
     }
 

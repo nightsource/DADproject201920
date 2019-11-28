@@ -31,9 +31,10 @@ class MovementControllerAPI extends Controller
     public function show(Request $request, $id)
     {
         $movement = Movement::find($id);
-        if($movement == null || ($movement->wallet_id != $request->user()->id && $movement->transfer_wallet_id != $request->user()->id))
+
+        if($request == null || (($movement->wallet_id != $request->user()->id && $movement->transfer_wallet_id != $request->user()->id) && $request->user()->type != 'a'))
             return response()->json("Movement not found", 404);
-        
+
         return new MovementResource(Movement::find($id));
     }     
 

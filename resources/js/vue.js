@@ -20,6 +20,8 @@ import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Users from './components/users';
+import Profile from './components/user_components/profile';
+import NavBar from './components/home/navbar';
 
 window.Vue = require('vue');
 
@@ -31,9 +33,7 @@ Vue.config.productionTip = false
 const ls = new SecureLS({ isCompression: false });
 const store = new Vuex.Store({
     state: {
-        store_token: "",
-        store_mail: "",
-        store_isLogged: false
+        store_token: ""
     },
     plugins: [
       createPersistedState({
@@ -45,9 +45,7 @@ const store = new Vuex.Store({
       })
     ],
     mutations: {
-        mut_isLogged: (state, value) => state.store_isLogged = value,
-        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = ""),
-        mut_email: (state, value) => value ? (state.store_mail = value) : (state.store_mail = "")
+        mut_token: (state, value) => value ? (state.store_token = value) : (state.store_token = "")
     }
   });
 
@@ -58,6 +56,7 @@ const routes=[
     {path:'/users',component:Users},
     {path:'/logout',component:Logout},
     {path:'/home',component:Home},
+    {path:'/profile',component:Profile},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -70,41 +69,42 @@ const app = new Vue({
     router,
     data() {
         return {
-            store_token: "",
-            store_email: "",
-            store_isLogged: false
+            store_token: ""
           };
     },
     computed: {
         getToken() {
           return store.state.store_token;
         },
-        getEmail() {
-          return store.state.store_mail;
-        },
         isLogged() {
-          return store.state.store_isLogged;
-        },
+          return store.state.store_token != "";
+        },        
     },
     methods: {
         setToken(token) {
             this.store_token = token;
-            store.commit("mut_isLogged", true);
             store.commit("mut_token", token);
             window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-        },
-        setEmail(email) {
-            this.store_email = email;
-            store.commit("mut_email", email);
+
+            axios
+                .get('/api/user/')
+                .then(response => {       
+                    this.user_logged = response.data;
+                  })
+                  .catch((error) => {
+                      console.log(error.response.data.msg)
+                  });
         },
         deleteToken() {
-            store.commit("mut_isLogged", false);
             store.commit("mut_token", '');
         },
-        setAuthorization() {      
-            window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;   
-            //this.store_email = store.state.store_mail;  
-        }
+        setAuthorization() {    
+            if(store.state.store_token != "") 
+              window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;
+        },
+    },
+    components: {
+      "nav-bar": NavBar
     },
     created() {
         this.setAuthorization()
