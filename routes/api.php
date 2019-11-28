@@ -29,9 +29,9 @@ Route::middleware('auth:api')->get('user/wallet', 'WalletControllerAPI@get'); //
 
 Route::middleware('auth:api')->get('movements', 'MovementControllerAPI@index'); //admin only
 Route::middleware('auth:api')->get('user/movements', 'MovementControllerAPI@get'); //only the user can access is movements
-Route::middleware('auth:api')->get('user/movements/income', 'MovementControllerAPI@getIncome'); //only the user can access is movements
-Route::middleware('auth:api')->get('user/movements/expense', 'MovementControllerAPI@getExpense'); //only the user can access is movements
-Route::middleware('auth:api')->get('user/movements/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
+Route::middleware('auth:api')->get('user/movements/incomes', 'MovementControllerAPI@getIncome'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/expenses', 'MovementControllerAPI@getExpense'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movement/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
 /*
 |
 |--------------------------------------------------------------------------
