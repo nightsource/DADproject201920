@@ -15,6 +15,7 @@ import Logout from './components/user_components/logout';
 //import Login from './components/login';
 //import Register from './components/user_components/register';
 import Home from './components/home/home';
+import Dashboard from './components/home/dashboard';
 import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -57,6 +58,7 @@ const routes=[
     {path:'/logout',component:Logout},
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
+    {path:'/dashboard',component:Dashboard},
     {path:'/',redirect:'/welcome'}
 ];
 
