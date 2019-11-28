@@ -18,18 +18,21 @@ class UserControllerAPI extends Controller
 {
     public function index(Request $request)
     {
-        
-
         if ($request->has('page')) {
-            return UserResource::collection(User::paginate(25));
+            return UserResource::collection(User::paginate(10));
         } else {
             return UserResource::collection(User::all());
         }
-    }   
+    }     
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        return new UserResource(User::find($id));
+        return $request->user()->id == $id || $request->user()->type == 'a' ? new UserResource(User::find($id)) : response()->json("User not found", 404);
+    }
+
+    public function get(Request $request)
+    {
+        return $request->user();
     }
 
     public function store(Request $request)

@@ -5,11 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Movement extends Model
 {
     use Notifiable;
-
-    protected $table = "movements";
+    
     /**
      * The attributes that are mass assignable.
      *

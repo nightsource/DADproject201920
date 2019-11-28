@@ -19,12 +19,20 @@ use Illuminate\Http\Request;
 | GETs
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth:api', 'admin:api'])->get('users', 'UserControllerAPI@index');
-Route::middleware('auth:api')->get('/user', function (Request $request) { return $request->user();});
-Route::middleware(['auth:api', 'admin:api'])->get('users/{id}', 'UserControllerAPI@show');
+Route::middleware(['auth:api', 'admin:api'])->get('users', 'UserControllerAPI@index'); //admin only
+Route::middleware('auth:api')->get('user', 'UserControllerAPI@get');
+Route::middleware('auth:api')->get('user/{id}', 'UserControllerAPI@show'); //only the user can access is user
 
-Route::middleware(['auth:api', 'admin:api'])->get('wallets', 'WalletControllerAPI@index');
-Route::middleware('auth:api')->get('/wallet', 'WalletControllerAPI@show');
+Route::middleware(['auth:api', 'admin:api'])->get('wallets', 'WalletControllerAPI@index'); //admin only
+Route::middleware('auth:api')->get('user/wallet', 'WalletControllerAPI@get'); //only the user can access is wallet
+
+
+Route::middleware(['auth:api', 'admin:api'])->get('movements', 'MovementControllerAPI@index'); //admin only
+Route::middleware(['auth:api', 'admin:api'])->get('movement/{id}', 'MovementControllerAPI@show'); //admin only
+Route::middleware('auth:api')->get('user/movements', 'MovementControllerAPI@get'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/incomes', 'MovementControllerAPI@getIncome'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movements/expenses', 'MovementControllerAPI@getExpense'); //only the user can access is movements
+Route::middleware('auth:api')->get('user/movement/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
 /*
 |
 |--------------------------------------------------------------------------
@@ -35,7 +43,7 @@ Route::post('login', 'LoginControllerAPI@login')->name('login');
 Route::post('register', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
 
-Route::middleware(['auth:api', 'operator:api'])->post('registerincomebyoperator', 'TransactionControllerAPI@registerIncomeByOperator');
+Route::middleware(['auth:api', 'operator:api'])->post('registerincomebyoperator', 'MovementControllerAPI@registerIncomeByOperator');
 
 /*
 |
