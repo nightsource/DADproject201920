@@ -12,7 +12,7 @@
         </div>
 
         <ul class="categories">
-            <li class="withoutAfter"><i class="fa fa-home fa-fw"></i><router-link to="/dashboard">Dashboard</router-link></li>
+            <li class="withoutAfter"><i class="fa fa-home fa-fw"></i><router-link to="/home">Dashboard</router-link></li>
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
