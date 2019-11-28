@@ -13,7 +13,6 @@
 <router-link to="/register">Register</router-link>
 <router-link v-if="isLogged" to="/profile">My Profile</router-link> -->
 
-
 <router-view></router-view>
 </div>
 
