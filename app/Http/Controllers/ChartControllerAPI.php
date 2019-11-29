@@ -20,46 +20,40 @@ use App\Movement;
 
 class ChartControllerAPI extends Controller
 {
-    public function index(Request $request)
+    public function monthly(Request $request)
     {
-        $chart = new SampleChart;
-        $chart->labels(['One', 'Two', 'Three']);
-        $chart->labels(['One', 'Two', 'Three', 'Four']);
-        $chart->dataset('My dataset', 'line', [1, 2, 3, 4]);
-        $chart->dataset('My dataset 2', 'line', [4, 3, 2, 1]);
 
-        return view('sample_view', ['chart' -> $chart]);
-    }    
+        $sub = DB::table('movements')
+        ->select(DB::raw('MAX(DATE)'))
+        ->where('wallet_id', "=", $request->user()->id)
+        ->where('date', ">", DB::raw('DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH) ,"%Y-%m-01")'))
+        ->where('date', "<", DB::raw('DATE_FORMAT(NOW(), "%Y-%m-01")'))
+        ->groupBy(DB::raw('YEAR(DATE)'), DB::raw('MONTH(DATE)'));      
 
-    public function show(Request $request, $id)
+        $chart = DB::table('movements')
+        ->select(DB::raw("CONCAT(YEAR(DATE), ' ', MONTHNAME(DATE)) AS label"), 'VALUE AS data')
+        ->whereIn('date', $sub)
+        ->distinct()
+        ->get();
+
+        return $chart;
+    }
+
+    public function incomeexpense(Request $request)
     {
-        $movement = Movement::find($id);
 
-        if($request == null || (($movement->wallet_id != $request->user()->id && $movement->transfer_wallet_id != $request->user()->id) && $request->user()->type != 'a'))
-            return response()->json("Movement not found", 404);
+        $chart = DB::table('movements')
+        ->select(DB::raw("SUM(VALUE) AS value"), DB::raw("YEAR(DATE) AS year"), DB::raw("MONTH(DATE) AS month"), 
+            DB::raw("CONCAT(YEAR(DATE), ' ', MONTHNAME(DATE)) AS label"), 'TYPE AS type')
+        ->where('wallet_id', "=", $request->user()->id)
+        ->where('date', ">", DB::raw('DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH) ,"%Y-%m-01")'))
+        ->where('date', "<", DB::raw('DATE_FORMAT(NOW(), "%Y-%m-01")'))
+        ->groupBy('year', 'month', 'label', 'type')   
+        ->orderBy('year') 
+        ->orderBy('month') 
+        ->orderBy('type', 'desc') 
+        ->get(); 
 
-        return new MovementResource(Movement::find($id));
-    }     
-
-    public function get(Request $request)
-    {       
-        return MovementResource::collection(Movement::where('wallet_id', $request->user()->id)
-                                            ->orWhere('transfer_wallet_id', $request->user()->id)
-                                            ->orderBy('date', 'desc')
-                                            ->get());        
-    }        
-
-    public function getIncome(Request $request)
-    {       
-        return MovementResource::collection(Movement::where('wallet_id', $request->user()->id)
-                                            ->orderBy('date', 'desc')
-                                            ->get());        
-    }       
-
-    public function getExpense(Request $request)
-    {       
-        return MovementResource::collection(Movement::where('transfer_wallet_id', $request->user()->id)
-                                            ->orderBy('date', 'desc')
-                                            ->get());        
+        return $chart;
     }
 }

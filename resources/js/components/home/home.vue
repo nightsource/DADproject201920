@@ -1,18 +1,57 @@
 <template>
 <div>
+    <!--<section class="statistics">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box">
+                        <i class="fa fa-envelope fa-fw bg-primary"></i>
+                        <div class="info">
+                            <h3>1,245</h3> <span>Emails</span>
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box">
+                        <i class="fa fa-file fa-fw danger"></i>
+                        <div class="info">
+                            <h3>34</h3> <span>Projects</span>
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="box">
+                        <i class="fa fa-users fa-fw success"></i>
+                        <div class="info">
+                            <h3>5,245</h3> <span>Users</span>
+                            <p>Lorem ipsum dolor sit amet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>-->
     <section class="charts">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="chart-container">
-                        <h3>Balanço mensal</h3>
+                        <h3>Monthly Balance</h3>
                         <chart-balance-monthly></chart-balance-monthly>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="chart-container">
-                        <h3>Balanço anual</h3>
-                        <chart-balance-yearly></chart-balance-yearly>
+                        <h3>Income vs Expense</h3>
+                        <chart-balance-income-vs-expense></chart-balance-income-vs-expense>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="chart-container">
+                        <h3>Latests 30 movements</h3>
+                        <latests-movements></latests-movements>
                     </div>
                 </div>
             </div>
@@ -22,22 +61,27 @@
 </template>
 
 <script>
-import ChartBalanceMonthlyComponent from "./charts/chartBalanceMonthly";
-import ChartBalanceYearlyComponent from "./charts/chartBalanceYearly";
+import ChartBalanceIncomeExpenseComponent from "./charts/chart_income_vs_expense";
+import ChartBalanceMonthlyComponent from "./charts/chart_balance_monthly";
+import LatestsMovementsComponent from "./components/latests_movements";
 
 export default {
-    data: function () {},
+    data: function () {
+        return {
+
+        }
+    },
     methods: {
-        isUserLogged() {},
     },
     components: {
+        "chart-balance-income-vs-expense": ChartBalanceIncomeExpenseComponent,
         "chart-balance-monthly": ChartBalanceMonthlyComponent,
-        "chart-balance-yearly": ChartBalanceYearlyComponent
+        "latests-movements": LatestsMovementsComponent
     },
 }
 </script>
 
-<style>
+<style scoped>
 * {
     padding: 0;
     margin: 0;

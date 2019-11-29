@@ -22,11 +22,8 @@
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script> 
 </head>
 
-<body>
-<div id="app" class="container" style="
-    max-width: 90%;    
-    margin: auto;
-    margin-top: 10px;">
+<body class="body">
+<div id="app" class="app">
         @yield('content')
     </div>
 

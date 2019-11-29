@@ -51,7 +51,7 @@ export default{
         failMessage: '',
         currentUser: null,
         users: {},
-       pagination: {}  
+        pagination: {}  
         }    
          
     },

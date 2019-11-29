@@ -141,7 +141,7 @@ body {
 .side-nav {
     float: left;
     height: 100%;
-    width: 20%;
+    width: 290px;
     background-color: #252636;
     color: #CCC;
     -webkit-transform: translateX(0);

@@ -58,6 +58,15 @@ class MovementControllerAPI extends Controller
         return MovementResource::collection(Movement::where('transfer_wallet_id', $request->user()->id)
                                             ->orderBy('date', 'desc')
                                             ->get());        
+    }       
+
+    public function getLatests(Request $request)
+    {       
+        if ($request->has('page')) {
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->paginate(25));
+        } else {
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->get());
+        }      
     }    
 
     //US 6 - can be adapted to future use

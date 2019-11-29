@@ -9,6 +9,7 @@ class Movement extends Model
 {
     use Notifiable;
     
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -29,5 +30,4 @@ class Movement extends Model
         'date' => 'datetime',
     ];
 
-    public $timestamps = false;
 }
