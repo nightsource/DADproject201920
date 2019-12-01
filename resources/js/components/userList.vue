@@ -1,5 +1,14 @@
 <template>
  <div>
+     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
+   
+
+        <p class="mt-3">Current Page: {{ currentPage }}</p>
+
+    <b-table  striped hover :items="items"  :fields="fields" id="my-table" :per-page="perPage" :current-page="currentPage">
+                
+    </b-table>  
+    
     <table class="table table-striped"  >
             <thead>
                 <tr>
@@ -27,17 +36,31 @@
                 </tr>
             </tbody>
     </table>
+
+
         
        </div> 
 </template>
 
 <script>
+import usersVue from './users.vue'
     export default {
         props:['users', 'currentUser'],
         data:function(){
           return{
-              
-          }
+                fields:[{ key: 'Photo', sortable: false}, 
+                        {key: 'Name', sortable: true }, 
+                        {key: 'Email', sortable: false },
+                        {key: 'Type', sortable: true }, 
+                        {key: 'NIF', sortable: false }, 
+                        {key: 'Active', sortable: false }, 
+                        {key: 'Actions', sortable: false } ],
+                perPage: 3,
+                currentPage: 1,
+                items: [
+                   
+                ]
+            }
         },  
         methods:{
             editUser(user){
@@ -48,7 +71,12 @@
                 this.$emit('delete-user', user)    
             },
             
-		}
+        },  
+        computed: {
+            rows() {
+                return this.items.length
+            }
+        }
     }
    
 
