@@ -1,6 +1,6 @@
 <template>
  <div>
-    <table class="table table-striped">
+    <table class="table table-striped"  >
             <thead>
                 <tr>
                     <th>Photo</th>
@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                    <tr v-for="user in users" :key="user.id" :class="{active: currentUser === user}">
+                <tr v-for="user in users" :key="user.id" :class="{active: currentUser === user}">
                     <td><img :src="'/storage/fotos/' + user.photo"></td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>

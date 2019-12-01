@@ -3,10 +3,7 @@
         <div class="jumbotron">
             <h1>{{ title }}</h1>
      </div>
-
-    <div><a class="btn btn-primary">Add user</a></div>
-
-              
+           
        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
       v-on:delete-user="deleteUser" ref="userListReference"></user-list>
 
@@ -15,21 +12,6 @@
             <strong>{{ successMessage }}</strong>
         </div>  
 
-       <div class="row">
-           <div class="col-md-8">
-               <nav>
-                   <ul class="pagination">
-                       <li v-bind:class="{disabled:!pagination.first_link}" class="page-item"><a href="#" @click="getUsers(pagination.first_link)" class="page-link">&laquo;</a></li>
-                       <li v-bind:class="{disabled:!pagination.prev_link}" class="page-item"><a href="#" @click="getUsers(pagination.prev_link)" class="page-link">&lt;</a></li>
-                       <li v-for="n in pagination.last_page" v-bind:key="n" v-bind:class="{active:!pagination.current_page == n}" class="page-item"><a href="#" @click="getUsers(pagination.path_page + n)" class="page-link">{{n}}</a></li>
-                       <li v-bind:class="{disabled:!pagination.next_link}" class="page-item"><a href="#" @click="getUsers(pagination.next_link)" class="page-link">&gt;</a></li>
-                       <li v-bind:class="{disabled:!pagination.last_link}" class="page-item"><a href="#" @click="getUsers(pagination.last_link)" class="page-link">&raquo;</a></li>
-                   </ul>
-               </nav>
-
-           </div>
-           
-       </div>
 
           <user-edit v-if="editingUser" :user="currentUser" @save_user="saveUser" @cancel_edit="cancelEdit"></user-edit>
     </div>
@@ -51,7 +33,6 @@ export default{
         failMessage: '',
         currentUser: null,
         users: {},
-       pagination: {}  
         }    
          
     },
@@ -101,18 +82,7 @@ export default{
                 axios.get('api/users?page=1')
                 .then(response=>{
                     this.users = response.data.data;
-                    this.pagination ={
-                    current_page: response.data.meta.current_page,
-                    last_page: response.data.meta.last_page,
-                    from_page: response.data.meta.from,
-                    to_page: response.data.meta.to,
-                    total_page: response.data.meta.total,
-                    path_page: response.data.meta.path + "page=",
-                    first_link: response.data.links.first,
-                    last_link: response.data.links.last,
-                    prev_link: response.data.links.prev,
-                    next_link: response.data.links.next
-                    };
+
                 })
                 
         }
