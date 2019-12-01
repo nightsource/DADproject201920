@@ -1,15 +1,14 @@
 <template>
- <div>
-     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
+ <div class="overflow-auto">
+    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
    
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
 
-        <p class="mt-3">Current Page: {{ currentPage }}</p>
-
-    <b-table  striped hover :items="items"  :fields="fields" id="my-table" :per-page="perPage" :current-page="currentPage">
+    <b-table  striped hover :items="items"  :fields="fields" id="my-table" :per-page="perPage" :current-page="currentPage" small>
                 
     </b-table>  
     
-    <table class="table table-striped"  >
+   <!--  <table class="table table-striped"  >
             <thead>
                 <tr>
                     <th>Photo</th>
@@ -35,7 +34,7 @@
                     </td>
                 </tr>
             </tbody>
-    </table>
+    </table> -->
 
 
         
@@ -48,6 +47,8 @@ import usersVue from './users.vue'
         props:['users', 'currentUser'],
         data:function(){
           return{
+                perPage: 3,
+                currentPage: 1,
                 fields:[{ key: 'Photo', sortable: false}, 
                         {key: 'Name', sortable: true }, 
                         {key: 'Email', sortable: false },
@@ -55,8 +56,7 @@ import usersVue from './users.vue'
                         {key: 'NIF', sortable: false }, 
                         {key: 'Active', sortable: false }, 
                         {key: 'Actions', sortable: false } ],
-                perPage: 3,
-                currentPage: 1,
+                
                 items: [
                    
                 ]
@@ -81,7 +81,7 @@ import usersVue from './users.vue'
    
 
 </script>
-
 <style >
+
 
 </style>

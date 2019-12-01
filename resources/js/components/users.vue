@@ -3,7 +3,10 @@
         <div class="jumbotron">
             <h1>{{ title }}</h1>
      </div>
-           
+
+    <div><a class="btn btn-primary">Add user</a></div>
+
+              
        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
       v-on:delete-user="deleteUser" ref="userListReference"></user-list>
 
@@ -11,7 +14,6 @@
             <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
             <strong>{{ successMessage }}</strong>
         </div>  
-
 
           <user-edit v-if="editingUser" :user="currentUser" @save_user="saveUser" @cancel_edit="cancelEdit"></user-edit>
     </div>
@@ -33,6 +35,7 @@ export default{
         failMessage: '',
         currentUser: null,
         users: {},
+       pagination: {}  
         }    
          
     },
@@ -82,7 +85,18 @@ export default{
                 axios.get('api/users?page=1')
                 .then(response=>{
                     this.users = response.data.data;
-
+                    this.pagination ={
+                    current_page: response.data.meta.current_page,
+                    last_page: response.data.meta.last_page,
+                    from_page: response.data.meta.from,
+                    to_page: response.data.meta.to,
+                    total_page: response.data.meta.total,
+                    path_page: response.data.meta.path + "page=",
+                    first_link: response.data.links.first,
+                    last_link: response.data.links.last,
+                    prev_link: response.data.links.prev,
+                    next_link: response.data.links.next
+                    };
                 })
                 
         }
