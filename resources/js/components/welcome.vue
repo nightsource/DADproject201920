@@ -158,20 +158,16 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     -webkit-animation: fadein 2s;
-    /* Safari, Chrome and Opera > 12.1 */
     -moz-animation: fadein 2s;
-    /* Firefox < 16 */
     -ms-animation: fadein 2s;
-    /* Internet Explorer */
     -o-animation: fadein 2s;
-    /* Opera < 12.1 */
     animation: fadein 2s;
 }
 
 a {
     margin: auto;
     font-size: 15px;
-    color: #fff !important;
+    color: #212121 !important;
 }
 
 h1 {
@@ -180,8 +176,8 @@ h1 {
     text-align: center;
     z-index: 1;
     font-size: 65px;
-    color: #fff;
-    text-shadow: -1px 1px 3px rgba(250, 250, 250, 0.4);
+    color: #212121;
+    text-shadow: -1px 1px 3px rgba(33, 33, 33, 0.4);
 }
 
 .head-moto {
@@ -189,9 +185,9 @@ h1 {
     display: inline-block;
     font-size: 25px;
     text-decoration: overline;
-    color: #fff;
+    color: #212121;
     -webkit-font-smoothing: antialiased;
-    text-shadow: -1px 1px 3px rgba(255, 255, 255, 0.4);
+    text-shadow: -1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .head-link {
@@ -199,7 +195,7 @@ h1 {
     display: inline-block;
     margin: 1em 15px 0 15px;
     font-size: 35px;
-    color: #fff;
+    color: #212121;
     -webkit-font-smoothing: antialiased;
     text-align: center;
     cursor: pointer;
@@ -222,7 +218,6 @@ h1 {
     }
 }
 
-/* Firefox < 16 */
 @-moz-keyframes fadein {
     from {
         opacity: 0;
@@ -233,7 +228,6 @@ h1 {
     }
 }
 
-/* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
     from {
         opacity: 0;
@@ -244,7 +238,6 @@ h1 {
     }
 }
 
-/* Internet Explorer */
 @-ms-keyframes fadein {
     from {
         opacity: 0;
@@ -255,7 +248,6 @@ h1 {
     }
 }
 
-/* Opera < 12.1 */
 @-o-keyframes fadein {
     from {
         opacity: 0;
