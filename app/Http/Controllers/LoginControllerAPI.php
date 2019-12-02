@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Resources\User as UserResource;
 
 use Illuminate\Http\Request;
+use App\User;
 
 define("YOUR_SERVER_URL", env('APP_URL'));
 // Check "oauth_clients" table for next 2 values:
@@ -26,7 +28,7 @@ class LoginControllerAPI extends Controller
                             'exceptions' => false,
                         ]);
         $errorCode= $response->getStatusCode();
-        if ($errorCode=='200') {
+        if ($errorCode=='200') {        
             return json_decode((string) $response->getBody(), true);
         } else {
             return response()->json(['msg'=>'User credentials are invalid'], $errorCode);

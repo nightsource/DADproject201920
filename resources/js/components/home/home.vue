@@ -1,5 +1,18 @@
 <template>
 <div>
+    <div class="welcome">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h2>Welcome to your Virtual Wallet, {{this.$root.user.name}}</h2>
+                        <p>O seu último acesso ao portal foi a {{this.$root.user.updated_at}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="statistics">
         <div class="container-fluid">
             <div class="row">
@@ -121,28 +134,28 @@ export default {
                 });
         },
         async getLatestsMovements() {
-                    axios
-                    .get("api/user/movements/latests")
-                    .then(response => {
-                        this.tablemovements = response.data.data;
+            axios
+                .get("api/user/movements/latests")
+                .then(response => {
+                    this.tablemovements = response.data.data;
 
-                        this.tablemovements.forEach(movement => {
-                            movement.date = new Date(movement.date).toLocaleString('en-GB', {
-                                timeZone: 'UTC'
-                            })
+                    this.tablemovements.forEach(movement => {
+                        movement.date = new Date(movement.date).toLocaleString('en-GB', {
+                            timeZone: 'UTC'
+                        })
 
-                            if (movement.type == 'e') {
-                                movement.value = 0 - movement.value
-                                movement._cellVariants = "{ value: 'danger' }"
-                            }
+                        if (movement.type == 'e') {
+                            movement.value = 0 - movement.value
+                            movement._cellVariants = "{ value: 'danger' }"
+                        }
 
-                            movement.value = "€ " + movement.value
-                        });
-                    })
-                    .catch((error) => {
-                        console.log("error");
-                        console.log(error)
+                        movement.value = "€ " + movement.value
                     });
+                })
+                .catch((error) => {
+                    console.log("error");
+                    console.log(error)
+                });
         },
     },
     mounted() {
@@ -160,6 +173,31 @@ export default {
 </script>
 
 <style>
+/* Start welcome */
+
+.welcome {
+    color: #212121;
+}
+
+.welcome .content {
+    background-color: #CECECE;
+    padding: 15px;
+    margin-top: 25px;
+}
+
+.welcome h2 {
+    font-family: Calibri;
+    font-weight: 100;
+    margin-top: 0;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.welcome p {
+    color: #212121;
+}
+
+/* Start stats*/
 .statistics {
     margin-top: 25px;
     color: #212121;
@@ -212,6 +250,7 @@ export default {
     background-color: #5bc0de
 }
 
+/* Start Charts*/
 .charts {
     margin-top: 25px;
     color: #212121
