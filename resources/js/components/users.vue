@@ -15,22 +15,6 @@
             <strong>{{ successMessage }}</strong>
         </div>  
 
-       <div class="row">
-           <div class="col-md-8">
-               <nav>
-                   <ul class="pagination">
-                       <li v-bind:class="{disabled:!pagination.first_link}" class="page-item"><a href="#" @click="getUsers(pagination.first_link)" class="page-link">&laquo;</a></li>
-                       <li v-bind:class="{disabled:!pagination.prev_link}" class="page-item"><a href="#" @click="getUsers(pagination.prev_link)" class="page-link">&lt;</a></li>
-                       <li v-for="n in pagination.last_page" v-bind:key="n" v-bind:class="{active:!pagination.current_page == n}" class="page-item"><a href="#" @click="getUsers(pagination.path_page + n)" class="page-link">{{n}}</a></li>
-                       <li v-bind:class="{disabled:!pagination.next_link}" class="page-item"><a href="#" @click="getUsers(pagination.next_link)" class="page-link">&gt;</a></li>
-                       <li v-bind:class="{disabled:!pagination.last_link}" class="page-item"><a href="#" @click="getUsers(pagination.last_link)" class="page-link">&raquo;</a></li>
-                   </ul>
-               </nav>
-
-           </div>
-           
-       </div>
-
           <user-edit v-if="editingUser" :user="currentUser" @save_user="saveUser" @cancel_edit="cancelEdit"></user-edit>
     </div>
 </template>
