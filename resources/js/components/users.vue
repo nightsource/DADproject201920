@@ -85,19 +85,7 @@ export default{
                 axios.get('api/users?page=1')
                 .then(response=>{
                     this.users = response.data.data;
-                    this.pagination ={
-                    current_page: response.data.meta.current_page,
-                    last_page: response.data.meta.last_page,
-                    from_page: response.data.meta.from,
-                    to_page: response.data.meta.to,
-                    total_page: response.data.meta.total,
-                    path_page: response.data.meta.path + "page=",
-                    first_link: response.data.links.first,
-                    last_link: response.data.links.last,
-                    prev_link: response.data.links.prev,
-                    next_link: response.data.links.next
-                    };
-                })
+               })
                 
         }
         
