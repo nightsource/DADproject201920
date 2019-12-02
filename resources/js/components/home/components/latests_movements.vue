@@ -1,16 +1,15 @@
 <template>
 <div>
-    <b-table id='movements-table' :small="true" :fixed="true" :striped="true" :fields="fields" :items="movements" :per-page="perPage" :current-page="currentPage"></b-table>
+    <b-table id='movements-table' :small="true" :fixed="true" :striped="true" :fields="fields" :items="tabledata" :per-page="perPage" :current-page="currentPage"></b-table>
     <b-pagination pills align="center" v-model="currentPage" :total-rows="rows" :per-page="perPage" size="sm" aria-controls="movements-table"></b-pagination>
 </div>
 </template>
 
 <script>
     export default {
+        props: ['tabledata'],
         data: function () {
             return {
-                movements: {},
-                pagination: {},
                 fields: [{
                         key: 'date',
                         sortable: true
@@ -24,41 +23,10 @@
                 currentPage: 1,
             }
         },
-        methods: {
-            getData() {
-                axios
-                    .get("api/user/movements/latests")
-                    .then(response => {
-                        this.movements = response.data.data;
-
-                        this.movements.forEach(movement => {
-                            movement.date = new Date(movement.date).toLocaleString('en-GB', {
-                                timeZone: 'UTC'
-                            })
-
-                            if (movement.type == 'e') {
-                                movement.value = 0 - movement.value
-                                movement._cellVariants = "{ value: 'danger' }"
-                            }
-
-                            movement.value = "€ " + movement.value
-                        });
-
-                        console.log("response.data.data movements");
-                        console.log(this.movements);
-                    })
-                    .catch((error) => {
-                        console.log("error");
-                        console.log(error)
-                    });
-            },
-        },
-        created() {
-            this.getData();
-        },
+        methods: {},
         computed: {
             rows() {
-                return this.movements.length
+                return this.tabledata.length
             }
         }
     }

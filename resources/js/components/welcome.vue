@@ -90,7 +90,6 @@ export default {
             axios
                 .post("api/login", this.user_login)
                 .then(response => {
-                    console.log("cenas");
                     this.user_login.access_token = response.data.access_token;
                     this.$root.setToken(this.user_login.access_token);
 

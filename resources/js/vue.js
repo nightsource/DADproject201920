@@ -114,8 +114,6 @@ const app = new Vue({
                 .get('/api/user/')
                 .then(response => {
                     this.user = response.data;
-                    console.log("this.user")
-                    console.log(this.user)
                 })
                 .catch((error) => {
                     console.log(error.response.data.msg)
@@ -126,8 +124,6 @@ const app = new Vue({
                 .get('/api/user/wallet')
                 .then(response => {
                     this.userWallet = response.data.data;
-                    console.log("this.userWallet")
-                    console.log(this.userWallet)
                 })
                 .catch((error) => {
                     console.log(error.response.data.msg)
