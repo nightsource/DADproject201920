@@ -73,7 +73,7 @@ export default {
 .side-nav {
     float: left;
     height: 100%;
-    width: 290px;
+    width: 15%;
     background-color: #252636;
     color: #CCC;
     -webkit-transform: translateX(0);
