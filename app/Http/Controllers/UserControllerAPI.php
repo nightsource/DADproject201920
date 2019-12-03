@@ -18,11 +18,11 @@ class UserControllerAPI extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->has('page')) {
+        /*if ($request->has('page')) {
             return UserResource::collection(User::paginate(10));
-        } else {
+        } else */
             return UserResource::collection(User::all());
-        }
+        
     }     
 
     public function show(Request $request, $id)

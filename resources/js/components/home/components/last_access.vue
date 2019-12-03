@@ -15,13 +15,11 @@
 
 <script>
 export default {
-    props: ["user"]
+    props: ["user"],
     data: function () {
         return {
             
-        },
-    methods: {
-        
+        }
     },
 }
 </script>
