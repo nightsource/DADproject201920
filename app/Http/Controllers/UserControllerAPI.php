@@ -70,14 +70,15 @@ class UserControllerAPI extends Controller
     {
         $request->validate([
             'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
-            'email' => 'required|email|unique:users,email',
-            'type' => 'required',
-            'photo' => '',
-            'nif' => ''
+            'email' => 'required|email|unique:users,email,'.$id,
+            'type' => 'required'
         ]);
         $user = User::findOrFail($id);
-        $user->update($request->all());
-        return new UserResource($user);
+        $user->fill($request->all());
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json($user, 200);
+        // return new UserResource($user);
     }
 
     public function destroy($id)
