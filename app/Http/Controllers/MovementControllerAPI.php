@@ -33,7 +33,7 @@ class MovementControllerAPI extends Controller
         $movement = Movement::find($id);
 
         if($request == null || (($movement->wallet_id != $request->user()->id && $movement->transfer_wallet_id != $request->user()->id) && $request->user()->type != 'a'))
-            return response()->json("Movement not found", 404);
+            return response()->json("404 Movement(s) not found", 404);
 
         return new MovementResource(Movement::find($id));
     }     
@@ -58,6 +58,15 @@ class MovementControllerAPI extends Controller
         return MovementResource::collection(Movement::where('transfer_wallet_id', $request->user()->id)
                                             ->orderBy('date', 'desc')
                                             ->get());        
+    }       
+
+    public function getLatests(Request $request)
+    {       
+        if ($request->has('page')) {
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->paginate(5));
+        } else {
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->get());
+        }      
     }    
 
     //US 6 - can be adapted to future use

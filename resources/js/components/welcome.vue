@@ -1,118 +1,3 @@
-<style>
-.centered {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-animation: fadein 2s;
-    /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadein 2s;
-    /* Firefox < 16 */
-    -ms-animation: fadein 2s;
-    /* Internet Explorer */
-    -o-animation: fadein 2s;
-    /* Opera < 12.1 */
-    animation: fadein 2s;
-}
-
-a {
-    margin: auto;
-    font-size: 15px;
-}
-
-h1 {
-    position: relative;
-    display: inline-block;
-    text-align: center;
-    z-index: 1;
-    font-size: 65px;
-    color: #333333;
-    text-shadow: -1px 1px 3px rgba(0, 0, 0, 0.7);
-}
-
-.head-moto {
-    position: relative;
-    display: inline-block;
-    font-size: 25px;
-    text-decoration: overline;
-    color: #333333;
-    -webkit-font-smoothing: antialiased;
-    text-shadow: -1px 1px 3px rgba(0, 0, 0, 0.7);
-}
-
-.head-link {
-    position: relative;
-    display: inline-block;
-    margin: 1em 15px 0 15px;
-    font-size: 35px;
-    color: #333333;
-    -webkit-font-smoothing: antialiased;
-    text-align: center;
-    cursor: pointer;
-}
-
-.logo {
-    max-width: 25vw;
-    height: auto;
-    margin: auto;
-    padding-bottom: 3em;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* Firefox < 16 */
-@-moz-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* Safari, Chrome and Opera > 12.1 */
-@-webkit-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* Internet Explorer */
-@-ms-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* Opera < 12.1 */
-@-o-keyframes fadein {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-</style>
-
 <template>
 <div>
     <div class="centered">
@@ -202,11 +87,9 @@ export default {
                 this.$router.push('home')
         },
         loginUser() {
-            console.log("login")
             axios
                 .post("api/login", this.user_login)
                 .then(response => {
-                    console.log("cenas");
                     this.user_login.access_token = response.data.access_token;
                     this.$root.setToken(this.user_login.access_token);
 
@@ -266,3 +149,111 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    -ms-animation: fadein 2s;
+    -o-animation: fadein 2s;
+    animation: fadein 2s;
+}
+
+a {
+    margin: auto;
+    font-size: 15px;
+    color: #212121 !important;
+}
+
+h1 {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    z-index: 1;
+    font-size: 65px;
+    color: #212121;
+    text-shadow: -1px 1px 3px rgba(33, 33, 33, 0.4);
+}
+
+.head-moto {
+    position: relative;
+    display: inline-block;
+    font-size: 25px;
+    text-decoration: overline;
+    color: #212121;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: -1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.head-link {
+    position: relative;
+    display: inline-block;
+    margin: 1em 15px 0 15px;
+    font-size: 35px;
+    color: #212121;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    cursor: pointer;
+}
+
+.logo {
+    max-width: 25vw;
+    height: auto;
+    margin: auto;
+    padding-bottom: 3em;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+</style>

@@ -69,13 +69,12 @@ const app = new Vue({
     router,
     data() {
         return {
-            store_token: ""
+            store_token: "",
+            user: {},
+            userWallet: {}
           };
     },
     computed: {
-        getToken() {
-          return store.state.store_token;
-        },
         isLogged() {
           return store.state.store_token != "";
         },        
@@ -99,8 +98,36 @@ const app = new Vue({
             store.commit("mut_token", '');
         },
         setAuthorization() {    
-            if(store.state.store_token != "") 
+            if(store.state.store_token == "") {
+                this.$router.push('welcome')
+            } else {
               window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.state.store_token;
+
+              this.getLoggedUser()
+              this.getLoggedUserWallet()
+              
+              this.$router.push('home')
+            }
+        },
+        getLoggedUser() {
+            axios
+                .get('/api/user/')
+                .then(response => {
+                    this.user = response.data;
+                })
+                .catch((error) => {
+                    console.log(error.response.data.msg)
+                });
+        },
+        getLoggedUserWallet() {
+            axios
+                .get('/api/user/wallet')
+                .then(response => {
+                    this.userWallet = response.data.data;
+                })
+                .catch((error) => {
+                    console.log(error.response.data.msg)
+                });
         },
     },
     components: {

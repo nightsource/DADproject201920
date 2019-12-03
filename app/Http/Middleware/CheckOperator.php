@@ -16,7 +16,7 @@ class CheckOperator
     public function handle($request, Closure $next)
     {
         if($request->user()->type != 'o')
-            return response()->json('401 Unauthorized  - Only operators can access this resource', 401);
+            return response()->json('401 Unauthorized - Only operators can access this resource', 401);
 
         return $next($request);
     }
