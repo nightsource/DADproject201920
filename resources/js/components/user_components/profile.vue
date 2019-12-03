@@ -78,6 +78,7 @@
 export default {
   data: function() {
     return {
+      lastPassword: "",
       password: "",
       retyped_password: "",
       showSuccess: false,
@@ -101,17 +102,23 @@ export default {
     },
     saveUser: function() {
       if (this.canUpdate()) {
-		  //TODO passar a pass para dentro do user
+        this.lastPassword=this.user.password;
+        this.user.password=this.password;
         axios.put("api/users/" + this.user.id, this.user).then(response => {
           console.log("response to save ", response);
           this.showSuccess = true;
           this.successMessage = "User saved successfully!";
           Object.assign(this.user, response.data.data);
         });
+        if(this.lastPassword!=this.password)
+        {
+          
+          this.$router.push('logout');
+        }
       }
     },
     canUpdate() {
-      return this.val_username;
+      return this.val_username && this.val_email && this.val_email;
     }
   },
   computed: {

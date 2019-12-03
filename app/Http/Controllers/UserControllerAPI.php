@@ -74,8 +74,11 @@ class UserControllerAPI extends Controller
             'type' => 'required'
         ]);
         $user = User::findOrFail($id);
-        $user->update($request->all());
-        return new UserResource($user);
+        $user->fill($request->all());
+        $user->password = Hash::make($request->password);
+        $user->update();
+        return response()->json($user, 200);
+        // return new UserResource($user);
     }
 
     public function destroy($id)
