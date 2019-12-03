@@ -44,7 +44,7 @@ export default{
             this.editingUser = true;
             this.showSuccess = false;
         },
-          deleteUser: function(user){
+        deleteUser: function(user){
             axios.delete('api/users/'+user.id)
                 .then(response => {
                     this.showSuccess = true;

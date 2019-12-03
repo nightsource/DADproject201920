@@ -54,7 +54,7 @@ Route::middleware(['auth:api', 'operator:api'])->post('registerincomebyoperator'
 | PUTs
 |--------------------------------------------------------------------------
 */
-Route::put('users/{id}', 'UserControllerAPI@update');
+Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
 
 /*
 |
