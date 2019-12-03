@@ -1,17 +1,6 @@
 <template>
 <div>
-    <div class="welcome">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="content">
-                        <h2>Welcome to your Virtual Wallet, {{this.$root.user.name}}</h2>
-                        <p>O seu último acesso ao portal foi a {{this.$root.user.updated_at}}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <last-access :user="this.$root.user"></last-access>
 
     <section class="statistics">
         <div class="container-fluid">
@@ -54,6 +43,7 @@ import ChartBalanceIncomeExpenseComponent from "./charts/chart_income_vs_expense
 import ChartBalanceMonthlyComponent from "./charts/chart_balance_monthly";
 import LatestsMovementsComponent from "./components/latests_movements";
 import Statistics from "./components/statistics";
+import LastAccess from "./components/last_access";
 
 export default {
     data: function () {
@@ -167,36 +157,13 @@ export default {
         "chart-balance-income-vs-expense": ChartBalanceIncomeExpenseComponent,
         "chart-balance-monthly": ChartBalanceMonthlyComponent,
         "latests-movements": LatestsMovementsComponent,
-        "statistics": Statistics
+        "statistics": Statistics,
+        "last-access": LastAccess
     },
 }
 </script>
 
 <style>
-/* Start welcome */
-
-.welcome {
-    color: #212121;
-}
-
-.welcome .content {
-    background-color: #CECECE;
-    padding: 15px;
-    margin-top: 25px;
-}
-
-.welcome h2 {
-    font-family: Calibri;
-    font-weight: 100;
-    margin-top: 0;
-    font-size: 32px;
-    font-weight: 500;
-}
-
-.welcome p {
-    color: #212121;
-}
-
 /* Start stats*/
 .statistics {
     margin-top: 25px;
