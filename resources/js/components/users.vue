@@ -1,17 +1,15 @@
 <template>
     <div>
-        <div class="jumbotron">
+        <div class="jumbotron"> 
             <h1>{{ title }}</h1>
      </div>
 
-    <div><a class="btn btn-primary">Add user</a></div>
-
-              
+             
        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
       v-on:delete-user="deleteUser" ref="userListReference"></user-list>
 
         <div class="alert alert-success" v-if="showSuccess">
-            <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
+            <b-button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</b-button>
             <strong>{{ successMessage }}</strong>
         </div>  
 
@@ -34,7 +32,7 @@ export default{
         successMessage: '',
         failMessage: '',
         currentUser: null,
-        users: {},
+        users: [],
         pagination: {}  
         }    
          
@@ -82,7 +80,7 @@ export default{
                 });
         },
         getUsers: function(){
-                axios.get('api/users?page=1')
+                axios.get('api/users')
                 .then(response=>{
                     this.users = response.data.data;
                })

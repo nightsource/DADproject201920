@@ -17,8 +17,10 @@
 export default {
     props: ["user"],
     data: function () {
-        return {}
-    }
+        return {
+            
+        }
+    },
 }
 </script>
 

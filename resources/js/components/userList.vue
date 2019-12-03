@@ -2,10 +2,12 @@
  <div class="overflow-auto">
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
    
-    <p class="mt-3">Current Page: {{ currentPage }}</p>
+    <b-table  striped hover :items="users" :fields="fields" id="my-table" 
+    :per-page="perPage" :current-page="currentPage">
+            
+                  
+       <b-button></b-button>
 
-    <b-table  striped hover :items="items"  :fields="fields" id="my-table" :per-page="perPage" :current-page="currentPage" small>
-                
     </b-table>  
     
    <!--  <table class="table table-striped"  >
@@ -47,19 +49,15 @@ import usersVue from './users.vue'
         props:['users', 'currentUser'],
         data:function(){
           return{
-                perPage: 3,
+                perPage: 10,
                 currentPage: 1,
-                fields:[{ key: 'Photo', sortable: false}, 
-                        {key: 'Name', sortable: true }, 
-                        {key: 'Email', sortable: false },
-                        {key: 'Type', sortable: true }, 
-                        {key: 'NIF', sortable: false }, 
-                        {key: 'Active', sortable: false }, 
-                        {key: 'Actions', sortable: false } ],
-                
-                items: [
-                   
-                ]
+                fields:[{ key: 'photo', sortable: false}, 
+                        {key: 'name', sortable: true }, 
+                        {key: 'email', sortable: false },
+                        {key: 'type', sortable: true }, 
+                        {key: 'nif', sortable: false }, 
+                        {key: 'active', sortable: false }, 
+                        {key: 'actions', sortable: false } ],
             }
         },  
         methods:{
@@ -73,8 +71,8 @@ import usersVue from './users.vue'
             
         },  
         computed: {
-            rows() {
-                return this.items.length
+            rows() {                
+                return this.users.length
             }
         }
     }
