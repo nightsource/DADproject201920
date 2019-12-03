@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Jsonable;
 
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\Wallet as WalletResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use App\User;
-//use App\StoreUserRequest;
+use App\Wallet;
 use Hash;
 
 class UserControllerAPI extends Controller
@@ -18,15 +19,20 @@ class UserControllerAPI extends Controller
     public function index(Request $request)
     {
         if ($request->has('page')) {
-            return UserResource::collection(User::paginate(25));
+            return UserResource::collection(User::paginate(10));
         } else {
             return UserResource::collection(User::all());
         }
-    }    
+    }     
 
-    public function show($id)
+    public function show(Request $request, $id)
+    {        
+        return $request->user()->id == $id || $request->user()->type == 'a' ? new UserResource(User::find($id)) : response()->json("404 User not found", 404);        
+    }
+
+    public function get(Request $request)
     {
-        return new UserResource(User::find($id));
+        return $request->user();
     }
 
     public function store(Request $request)
@@ -48,6 +54,15 @@ class UserControllerAPI extends Controller
         $user->photo = $photoname;
         $user->password = Hash::make($user->password);
         $user->save();
+        
+        if($user->type == 'u') {
+            $wallet = new Wallet();
+            $wallet->id = $user->id;        
+            $wallet->email = $user->email;
+            $wallet->balance = 0;        
+            $wallet->save();
+        }
+
         return response()->json(new UserResource($user), 201);
     }
 
