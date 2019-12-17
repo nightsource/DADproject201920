@@ -75,7 +75,7 @@ class MovementControllerAPI extends Controller
         $request->validate([
                 'email' => 'required',
                 'type_payment' => 'required|in:bt,c',
-                'iban' => 'sometimes|regex:/^[A-Za-z]{2}[0-9]{23}+$/',
+                'iban' => 'sometimes|regex:/^[A-Z]{2}[0-9]{23}+$/',
                 'value' => 'required|min:0|max:5000'
             ]);
             
@@ -105,7 +105,7 @@ class MovementControllerAPI extends Controller
         $request->validate([
                 'wallet_id' => 'required',
                 'type' => 'required',
-                'iban' => 'sometimes|regex:/^[A-Za-z]{2}[0-9]{23}+$/',
+                'iban' => 'sometimes|regex:/^[A-Z]{2}[0-9]{23}+$/',
                 'category' => 'required',
                 'start_balance' => 'required',
                 'end_balance' => 'required',
