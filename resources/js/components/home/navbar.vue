@@ -22,8 +22,8 @@
                     <span class="num succ">2 new</span>
                 </a>
                 <ul class="side-nav-dropdown">
-                    <li><a>List transactions</a></li>
-                    <li><a>Create transaction</a></li>
+                    <!-- <li><a>List transactions</a></li> -->
+                    <li><router-link to="/addmovement">Create transaction</router-link></li>
                 </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
