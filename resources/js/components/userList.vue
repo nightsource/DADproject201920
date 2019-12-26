@@ -1,15 +1,26 @@
 <template>
  <div class="overflow-auto">
     <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="my-table"></b-pagination>
-   
-    <b-table  striped hover :items="users" :fields="fields" id="my-table" 
-    :per-page="perPage" :current-page="currentPage">
+     
+    
+
+    <b-table  striped hover :items="users" :fields="fields" id="my-table" :per-page="perPage" :current-page="currentPage" >
             
-                  
-       <b-button></b-button>
+          <template v-slot:cell(photo)="row" v-slot:key="user.photo" :class="{active: currentUser === user}" >
+              <b-img class="rounded" :src="'/storage/fotos/' + users.photo" ></b-img>
+           </template>     
+       
+        <template v-slot:cell(actions)="row" v-slot:key="user.id" :class="{active: currentUser === user}">
+            <b-button variant="success" v-on:click="editUser(row.item)">Edit</b-button>
+            <b-button variant="danger" v-on:click="deleteUser(row.item)">Delete</b-button>
+       </template>    
 
     </b-table>  
     
+     <user-edit v-if="currentUser!=undefined"  :user="currentUser"></user-edit>
+       
+
+
    <!--  <table class="table table-striped"  >
             <thead>
                 <tr>
@@ -45,11 +56,14 @@
 
 <script>
 import usersVue from './users.vue'
+import UserEdit from './userEdit.vue'
+
     export default {
-        props:['users', 'currentUser'],
+        props:['users'],
         data:function(){
           return{
                 perPage: 10,
+                currentUser:undefined,
                 currentPage: 1,
                 fields:[{ key: 'photo', sortable: false}, 
                         {key: 'name', sortable: true }, 
@@ -62,7 +76,8 @@ import usersVue from './users.vue'
         },  
         methods:{
             editUser(user){
-                this.$emit('edit-user',user)
+                console.log(user)
+                this.currentUser=user
             },
 
             deleteUser(user){
@@ -71,10 +86,14 @@ import usersVue from './users.vue'
             
         },  
         computed: {
-            rows() {                
+           rows() {                
                 return this.users.length
             }
+        },components:{
+            "user-edit": UserEdit, 
         }
+        
+       
     }
    
 
