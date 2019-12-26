@@ -29,6 +29,7 @@
         "true-case-path": "^2.2.1",
         "vue-bootstrap-pagination": "^2.10.3",
         "vue-chartjs": "^3.5.0",
+        "vue-currency-input": "^1.14.3",
         "vuex": "^3.1.2",
         "vuex-persistedstate": "^2.7.0"
     }

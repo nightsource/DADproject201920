@@ -8,6 +8,7 @@ require('./bootstrap');
 
 
 import VueRouter from 'vue-router';
+import VueCurrencyInput from 'vue-currency-input'
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
@@ -29,6 +30,11 @@ window.Vue = require('vue');
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BootstrapVue)
+const pluginOptions = {
+    /* see config reference */
+    globalOptions: { currency: 'EUR' }
+  }
+  Vue.use(VueCurrencyInput, pluginOptions)
 Vue.config.productionTip = false
 
 const ls = new SecureLS({ isCompression: false });

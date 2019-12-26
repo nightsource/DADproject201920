@@ -121,4 +121,44 @@ class MovementControllerAPI extends Controller
         $movement->save();
         return response()->json(new MovementResource($movement), 201);
     }
+
+    public function registerMovementbyUser(Request $request){
+
+        $request->validate([
+            'type' => 'required',
+            'iban' => 'sometimes|regex:/^[A-Z]{2}[0-9]{23}+$/',
+            'category' => 'required',
+            'start_balance' => 'required',
+            'end_balance' => 'required',
+            'amount' => 'required|between:0.01,5000.00'
+        ]);
+
+        $userwallet = Wallet::where('email', '=', $request->user.email)->first();
+        if($request->destinEmail!=null || $request->destinEmail!=''){
+            $destinationwallet = Wallet::where('email', '=', $request->destinEmail)->first();
+            $userwallet->balance = $userwallet->balance - $request->value ;
+            $userwallet->save();
+            $destinationwallet->balance = $destinationwallet->balance + $request->value ;
+            $destinationwallet->save();
+            //create websocket tell destination about income value
+        }
+    }
+    
 }
+/*
+wallet_id
+type
+transfer
+transfer_movement_id
+transfer_wallet_id
+type_payment
+category_id
+iban
+mb_entity_code
+mb_payment_reference
+description
+source_description
+date
+start_balance
+end_balance
+value */

@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('user', 'UserControllerAPI@get');
 Route::middleware('auth:api')->get('users/{id}', 'UserControllerAPI@show'); //only the user can access his user details or the admin
 
 Route::middleware(['auth:api', 'admin:api'])->get('wallets', 'WalletControllerAPI@index'); //admin only
-Route::middleware('auth:api')->get('user/wallet', 'WalletControllerAPI@get'); //only the user can access his wallet
+Route::middleware('auth:api')->get('user/wallet/{id}', 'WalletControllerAPI@get'); //only the user can access his wallet
 
 
 Route::middleware(['auth:api', 'admin:api'])->get('movements', 'MovementControllerAPI@index'); //admin only
@@ -37,6 +37,7 @@ Route::middleware('auth:api')->get('user/movements/incomes', 'MovementController
 Route::middleware('auth:api')->get('user/movements/expenses', 'MovementControllerAPI@getExpense'); //only the user can access his movements
 Route::middleware('auth:api')->get('user/movement/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
 Route::get('categories', 'CategoryControllerAPI@get'); //everyone can see categories
+
 /*
 |
 |--------------------------------------------------------------------------
@@ -46,7 +47,6 @@ Route::get('categories', 'CategoryControllerAPI@get'); //everyone can see catego
 Route::post('login', 'LoginControllerAPI@login')->name('login');
 Route::post('register', 'UserControllerAPI@store');
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
-
 Route::middleware(['auth:api', 'operator:api'])->post('registerincomebyoperator', 'MovementControllerAPI@registerIncomeByOperator');
 
 /*
