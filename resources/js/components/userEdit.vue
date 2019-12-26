@@ -42,7 +42,7 @@
 <script>
 
 export default {
-props: ['user', ],
+props: ['user'],
  methods:{
      saveUser(){
         this.$emit('save-user',this.user)

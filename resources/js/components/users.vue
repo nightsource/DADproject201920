@@ -6,7 +6,7 @@
 
              
        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
-      v-on:delete-user="deleteUser" ref="userListReference"></user-list>
+      v-on:delete-user="deleteUser"  :message="childMessage" ref="userListReference"></user-list>
 
         <div class="alert alert-success" v-if="showSuccess">
             <b-button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</b-button>
@@ -43,6 +43,7 @@ export default{
             this.currentUser = user;
             this.editingUser = true;
             this.showSuccess = false;
+           
         },
         deleteUser: function(user){
             axios.delete('api/users/'+user.id)
@@ -85,8 +86,11 @@ export default{
                     this.users = response.data.data;
                })
                 
+        },
+         childMessage: function(message) {
+            this.showSuccess = true;
+            this.successMessage = message;
         }
-        
     },
     mounted() {
        this.getUsers();
