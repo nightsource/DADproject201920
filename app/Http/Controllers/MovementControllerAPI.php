@@ -63,9 +63,9 @@ class MovementControllerAPI extends Controller
     public function getLatests(Request $request)
     {       
         if ($request->has('page')) {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->paginate(5));
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->paginate(5));
         } else {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->get());
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->get());
         }      
     }    
 
@@ -143,7 +143,7 @@ class MovementControllerAPI extends Controller
         $orig_mov = new Movement();
         $dest_mov = new Movement();
         $orig_mov->wallet_id = $request->wallet_id;
-        $orig_mov->type = $request->type;
+        $orig_mov->type = 'e';
         $orig_mov->transfer = 1;
         $orig_mov->transfer_wallet_id = $request->transfer_wallet_id;
         $orig_mov->category_id = $request->category_id;
@@ -154,7 +154,7 @@ class MovementControllerAPI extends Controller
         $orig_mov->value = $request->value;
         $orig_mov->type_payment = 'c';
         $dest_mov->wallet_id = $request->transfer_wallet_id;
-        $dest_mov->type = $request->type;
+        $dest_mov->type = 'i';
         $dest_mov->transfer = 1;
         $dest_mov->transfer_wallet_id = $request->wallet_id;
         $dest_mov->category_id = $request->category_id;
@@ -165,6 +165,7 @@ class MovementControllerAPI extends Controller
         $dest_mov->value = $request->value;
         $dest_mov->type_payment = 'c';
         $orig_mov->save();
+        $dest_mov->transfer_movement_id = $orig_mov->id;
         $dest_mov->save();
         $origWallet->save();
         $destWallet->save();
@@ -188,7 +189,7 @@ class MovementControllerAPI extends Controller
         $wallet->balance = $request->end_balance;
         $orig_mov = new Movement();
         $orig_mov->wallet_id = $request->wallet_id;
-        $orig_mov->type = $request->type;
+        $orig_mov->type = 'e';
         $orig_mov->transfer = 1;
         $orig_mov->category_id = $request->category_id;
         $orig_mov->description = $request->description;
