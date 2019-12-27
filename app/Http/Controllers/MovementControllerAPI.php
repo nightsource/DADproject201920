@@ -123,19 +123,23 @@ class MovementControllerAPI extends Controller
     }
 
     public function registerInternalMovement(Request $request){
+
         $request->validate([
             'type' => 'required',
-            'iban' => 'sometimes|regex:/^[A-Z]{2}[0-9]{23}+$/',
-            'category' => 'required',
+            'category_id' => 'required',
             'start_balance' => 'required',
             'end_balance' => 'required',
             'email' => 'required',
             'wallet_id' => 'required',
             'transfer_wallet_id' => 'required',
-            'amount' => 'required|between:0.01,5000.00'
+            'value' => 'required|between:0.01,5000.00'
         ]);
-
+        $origWallet = Wallet::where('id', '=', $request->wallet_id)->first();
+        $origWallet->balance = $request->end_balance;
         $destWallet = Wallet::where('id', '=', $request->transfer_wallet_id)->first();
+        $destWalletBalance = $destWallet->balance;
+        $value = $request->value;
+        $destWallet->balance = $destWalletBalance + $value;
         $orig_mov = new Movement();
         $dest_mov = new Movement();
         $orig_mov->wallet_id = $request->wallet_id;
@@ -148,7 +152,7 @@ class MovementControllerAPI extends Controller
         $orig_mov->start_balance = $request->start_balance;
         $orig_mov->end_balance = $request->end_balance;
         $orig_mov->value = $request->value;
-        $orig_mov->save();
+        $orig_mov->type_payment = 'c';
         $dest_mov->wallet_id = $request->transfer_wallet_id;
         $dest_mov->type = $request->type;
         $dest_mov->transfer = 1;
@@ -159,22 +163,29 @@ class MovementControllerAPI extends Controller
         $dest_mov->start_balance = $destWallet->balance;
         $dest_mov->end_balance = $destWallet->balance + $request->value;
         $dest_mov->value = $request->value;
+        $dest_mov->type_payment = 'c';
+        $orig_mov->save();
         $dest_mov->save();
+        $origWallet->save();
+        $destWallet->save();
         return response()->json(new MovementResource($orig_mov), 201);
+        // return response()->json($destWalletBalance);
     }
 
     public function registerExternalMovement(Request $request){
         $request->validate([
             'type' => 'required',
             'iban' => 'sometimes|regex:/^[A-Z]{2}[0-9]{23}+$/',
-            'category' => 'required',
+            'category_id' => 'required',
             'start_balance' => 'required',
             'end_balance' => 'required',
             'wallet_id' => 'required',
             'type_payment' => 'required',
-            'amount' => 'required|between:0.01,5000.00'
+            'value' => 'required|between:0.01,5000.00'
         ]);
-        
+
+        $wallet = Wallet::where('id', '=', $request->wallet_id)->first();
+        $wallet->balance = $request->end_balance;
         $orig_mov = new Movement();
         $orig_mov->wallet_id = $request->wallet_id;
         $orig_mov->type = $request->type;
@@ -186,14 +197,16 @@ class MovementControllerAPI extends Controller
             $orig_mov->mb_entity_code = $orig_mov->mb_entity_code;
             $orig_mov->mb_payment_reference = $orig_mov->mb_payment_reference;
         } else if($request->type_payment=='bt'){
-            $orig_mov->iban = $orig_mov->iban;
+            $orig_mov->iban = $request->iban;
         }
         $orig_mov->date = Carbon::now();
         $orig_mov->start_balance = $request->start_balance;
         $orig_mov->end_balance = $request->end_balance;
         $orig_mov->value = $request->value;
         $orig_mov->save();
+        $wallet->save();
         return response()->json(new MovementResource($orig_mov), 201);
+        // return response()->json($wallet, 201);
     }
 }
 /*
