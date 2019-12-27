@@ -112,7 +112,6 @@ export default {
         });
         if(this.lastPassword!=this.password)
         {
-          
           this.$router.push('logout');
         }
       }

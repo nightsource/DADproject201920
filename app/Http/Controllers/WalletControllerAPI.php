@@ -43,13 +43,12 @@ class WalletControllerAPI extends Controller
     public function get(Request $request)
     {
         $wallet = Wallet::findOrFail($request->user()->id);
-
         return new WalletResource($wallet);
     }
 
     public function getWalletId(Request $request){
         $wallet = Wallet::where('email', '=', $request->email)->first();
-        return response()->json($wallet->id, 201);
+        return $wallet;
     }
 
     public function update(Request $request)

@@ -1,7 +1,8 @@
 <template>
 	<div class="registerBody">
 		<b-form>
-			<b-alert v-if="response != ''" show variant="danger">{{response}}</b-alert>
+			<b-alert v-if="showFailure" show variant="danger">{{failMessage}}</b-alert>
+			<b-alert v-if="showSuccess" show variant="success">{{successMessage}}</b-alert>
 
 			<b-form-group label="Type of Expense:">
 				<b-form-select v-model="mov_register.type" class="mb-3">
@@ -96,12 +97,12 @@
 				<b-form-input
 					id="input-email"
 					type="text"
-					v-model="mov_register.destinEmail"
+					v-model="mov_register.email"
 					placeholder="Enter destinator email"
 				></b-form-input>
 			</b-form-group>
-			<b-form-invalid-feedback v-if="mov_register.destinEmail !== null" :state="val_email">
-				It has to be a valid e-mail.
+			<b-form-invalid-feedback v-if="mov_register.email !== null" :state="val_email">
+				It has to be a valid e-mail and exist in our database.
 			</b-form-invalid-feedback>
 
 			<div class="form-group">
@@ -134,6 +135,7 @@ export default {
 				end_balance
 				value */
 			mov_register: {
+				wallet_id:null,
 				value: null,
 				category_id: null,
 				type: null,	//e-external i-internal
@@ -142,7 +144,10 @@ export default {
 				iban:null,
 				mb_entity_code:null,
 				mb_payment_reference:null,
-				destinEmail:null
+				email:null,
+				start_balance:null,
+				end_balance:null,
+				transfer_wallet_id:null
 			},
 			user: {
         name: "",
@@ -151,6 +156,10 @@ export default {
         access_token: ""
       },
 			response: "",
+			showSuccess:false,
+			successMessage:'',
+			showFailure:false,
+			failMessage:'',
 			categories: [],
 		};
 	},
@@ -162,38 +171,58 @@ export default {
       });
     },
 		getWallet(){
-			axios.get("api/user/wallet/"+this.user.id,this.user).then(response => {
-				console.log("response: ", response.data.data);
-				//this.userwallet = response.data.data;
-				// console.log("responsethis.categories: ", this.categories);
+			axios.get("api/user/wallet").then(response => {
+				this.mov_register.wallet_id = response.data.data.id;
+				this.mov_register.start_balance = parseFloat(response.data.data.balance);
 			});
 		},
 		getCategories() {
 			axios.get("api/categories").then(response => {
-				// console.log("response: ", response.data.data);
 				this.categories = response.data.data;
-				// console.log("responsethis.categories: ", this.categories);
 			});
 		},
 		saveExpense() {
-			console.log('movement to save ', JSON.parse(JSON.stringify(this.mov_register)));
 			if (this.canRegister()) {
-				this.getWallet();
+				this.mov_register.end_balance = this.mov_register.start_balance - this.mov_register.value;
 				this.response='';
-				//axios.put('api/movements/register')
-
+				if(this.mov_register.type=='i'){
+					//internal transfer
+					//getDestinationWallet
+						axios.get("api/user/wallet/"+ this.mov_register.email)
+							.then(response => {
+							if(response.data==''){
+								this.response='This e-mail does not exist in our database.';
+								return;
+							}else{
+								this.response='';
+								this.mov_register.transfer_wallet_id = response.data.id;
+								// console.log('movement to save :', JSON.parse(JSON.stringify(this.mov_register)));
+								axios.put("api/movements/registerInternal", this.mov_register).then(response => {
+          				console.log("response to save ", response);
+          				this.showSuccess = true;
+         					this.successMessage = "Movement saved successfully!";
+        				});
+								//create websocket tell destination about income value
+							}
+						});
+						
+				} else if (this.mov_register.type=='e'){
+					//external movement
+					axios.put("api/movements/registerExternal", this.mov_register).then(response => {
+          				console.log("response to save ", response);
+          				this.showSuccess = true;
+         					this.successMessage = "Movement saved successfully!";
+        				});
+				}
 			}else{
 				this.response = 'Please correct invalid fields.';
 			}
-
 		},
 		cancelExpense() {
 			this.$router.push('home')
 		},
 		canRegister() {
-						console.log('amount ',this.val_amount)
-						console.log('email ',this.val_email)
-						return (this.val_amount && this.val_email ) ? false : this.val_amount && this.val_email;
+						return (this.val_amount && this.val_email);
 		}
 	},
 	computed: {
@@ -217,16 +246,17 @@ export default {
 			return reg.test(this.mov_register.mb_payment_reference);
 		},
 		val_email() {
-						if (this.mov_register.destinEmail == '')
-								return null;
-
+						if (this.mov_register.email == null)
+								return true;
+						
 						let reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
-						return reg.test(this.mov_register.destinEmail);
+						return reg.test(this.mov_register.email);
 				}
 	},
 	mounted() {
 		this.getUser();
 		this.getCategories();
+		this.getWallet();
 	}
 };
 </script>
