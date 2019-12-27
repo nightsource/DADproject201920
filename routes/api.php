@@ -38,7 +38,6 @@ Route::middleware('auth:api')->get('user/movements/incomes', 'MovementController
 Route::middleware('auth:api')->get('user/movements/expenses', 'MovementControllerAPI@getExpense'); //only the user can access his movements
 Route::middleware('auth:api')->get('user/movement/{id}', 'MovementControllerAPI@show'); //only the user can access his detailed movement
 Route::get('categories', 'CategoryControllerAPI@get'); //everyone can see categories
-
 /*
 |
 |--------------------------------------------------------------------------

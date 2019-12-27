@@ -40,8 +40,8 @@ class MovementControllerAPI extends Controller
 
     public function get(Request $request)
     {       
-        return MovementResource::collection(Movement::where('wallet_id', $request->user()->id)
-                                            ->orWhere('transfer_wallet_id', $request->user()->id)
+        $wallet = Wallet::findOrFail($request->user()->id);
+        return MovementResource::collection(Movement::where('wallet_id', $wallet->id)
                                             ->orderBy('date', 'desc')
                                             ->get());        
     }        
@@ -56,7 +56,7 @@ class MovementControllerAPI extends Controller
     public function getExpense(Request $request)
     {       
         return MovementResource::collection(Movement::where('transfer_wallet_id', $request->user()->id)
-                                            ->orderBy('date', 'desc')
+                                            ->orderBy('date', 'desc')->paginate(10)
                                             ->get());        
     }       
 
@@ -65,8 +65,8 @@ class MovementControllerAPI extends Controller
         if ($request->has('page')) {
             return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->paginate(5));
         } else {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->get());
-        }      
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(6)->get());
+        }
     }    
 
     //US 6 - can be adapted to future use

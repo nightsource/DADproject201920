@@ -18,9 +18,9 @@
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
-                <a> Transactions
+                <router-link v-if="$root.user.type==='u'" to="/listmovements"> Movements
                     <span class="num succ">2 new</span>
-                </a>
+                </router-link>
                 <ul class="side-nav-dropdown">
                     <!-- <li><a>List transactions</a></li> -->
                     <li><router-link v-if="$root.user.type==='u'" to="/addmovement">Register Expense</router-link></li>
