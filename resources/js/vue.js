@@ -8,6 +8,7 @@ require('./bootstrap');
 
 
 import VueRouter from 'vue-router';
+import VueCurrencyInput from 'vue-currency-input'
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
@@ -22,12 +23,18 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import Users from './components/users';
 import Profile from './components/user_components/profile';
 import NavBar from './components/home/navbar';
+import AddMovement from './components/movements/registerMovement';
 
 window.Vue = require('vue');
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BootstrapVue)
+const pluginOptions = {
+    /* see config reference */
+    globalOptions: { currency: 'EUR' }
+  }
+  Vue.use(VueCurrencyInput, pluginOptions)
 Vue.config.productionTip = false
 
 const ls = new SecureLS({ isCompression: false });
@@ -57,6 +64,7 @@ const routes=[
     {path:'/logout',component:Logout},
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
+    {path:'/addmovement',component:AddMovement},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -106,7 +114,7 @@ const app = new Vue({
               this.getLoggedUser()
               this.getLoggedUserWallet()
               
-              this.$router.push('home')
+            //   this.$router.push('home')
             }
         },
         getLoggedUser() {
