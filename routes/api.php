@@ -65,4 +65,4 @@ Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
 | DELETEs
 |--------------------------------------------------------------------------
 */
-Route::delete('users/{id}', 'UserControllerAPI@destroy');
+Route::middleware('auth:api')->delete('users/{id}', 'UserControllerAPI@destroy');

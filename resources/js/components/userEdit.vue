@@ -43,14 +43,28 @@
 
 export default {
 props: ['user'],
- methods:{
-     saveUser(){
-        this.$emit('save-user',this.user)
-     }, 
-     cancelEdit(){
-            this.$emit('cancel-user')
-     }
- }
+ methods: {
+	        saveUser: function(){
+	            axios.put('api/users/'+this.user.id, this.user)
+	                .then(response=>{
+	                	Object.assign(this.user, response.data.data);
+                        this.$emit('user-saved', this.user)
+                        
+                        this.showSuccess = true
+                        this.successMessage = "User Saved"
+
+	                });
+	        },
+	        cancelEdit: function(){
+	        	axios.get('api/users/'+this.user.id)
+	                .then(response=>{
+	                	// Copy object properties from response.data.data to this.user
+	                	// without creating a new reference
+	                	Object.assign(this.user, response.data.data);
+	                	this.$emit('user-canceled', this.user);
+	                });
+	        }
+		}
 
     
        
