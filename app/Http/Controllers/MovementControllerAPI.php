@@ -63,9 +63,9 @@ class MovementControllerAPI extends Controller
     public function getLatests(Request $request)
     {       
         if ($request->has('page')) {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->paginate(5));
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->paginate(5));
         } else {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->get());
+            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(30)->get());
         }      
     }    
 

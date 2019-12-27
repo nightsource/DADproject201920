@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="chart-container">
-                        <h3>Latests 5 movements</h3>
+                        <h3>Latests 30 movements</h3>
                         <latests-movements :tabledata="tablemovements"></latests-movements>
                     </div>
                 </div>
