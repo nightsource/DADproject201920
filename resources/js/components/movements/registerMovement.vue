@@ -5,14 +5,14 @@
       <b-alert v-if="showSuccess" show variant="success">{{successMessage}}</b-alert>
 
       <b-form-group label="Type of Expense:">
-        <b-form-select v-model="mov_register.type" class="mb-3">
+        <b-form-select v-model="type" class="mb-3">
           <!-- This slot appears above the options from 'options' prop -->
           <template v-slot:first>
             <option :value="null" disabled>-- Please select an expense --</option>
           </template>
           <!-- These options will appear after the ones from 'options' prop -->
-          <option value="e">External Payment</option>
-          <option value="i">Account Transfer</option>
+          <option value="external">External Payment</option>
+          <option value="internal">Account Transfer</option>
         </b-form-select>
       </b-form-group>
 
@@ -48,7 +48,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group v-if="mov_register.type === 'e'" label="Type of payment:">
+      <b-form-group v-if="type === 'external'" label="Type of payment:">
         <b-form-select v-model="mov_register.type_payment" class="mb-3">
           <template v-slot:first>
             <option :value="null" disabled>-- Please select a payment type --</option>
@@ -97,7 +97,7 @@
         :state="val_mb_reference"
       >MB Reference consists in 9 numbers</b-form-invalid-feedback>
 
-      <b-form-group v-if="mov_register.type === 'i'" label="Destinator e-mail:">
+      <b-form-group v-if="type === 'internal'" label="Destinator e-mail:">
         <b-form-input
           id="input-email"
           type="text"
@@ -127,7 +127,7 @@ export default {
         wallet_id: null,
         value: null,
         category_id: null,
-        type: null, //e-external i-internal
+        type: null, //e-expense i-income
         description: "",
         type_payment: null, //mb bt c
         iban: null,
@@ -137,7 +137,8 @@ export default {
         start_balance: null,
         end_balance: null,
         transfer_wallet_id: null
-      },
+			},
+			type:'',
       user: {
         name: "",
         email: "",
@@ -177,7 +178,7 @@ export default {
         this.mov_register.end_balance =
           this.mov_register.start_balance - this.mov_register.value;
         this.response = "";
-        if (this.mov_register.type == "i") {
+        if (this.type == "internal") {
           //internal transfer
           //getDestinationWallet
           axios
@@ -204,7 +205,7 @@ export default {
                 //create websocket tell destination about income value
               }
             });
-        } else if (this.mov_register.type == "e") {
+        } else if (this.type == "external") {
           //external movement
           axios
             .post("api/movements/registerExternal", this.mov_register)
