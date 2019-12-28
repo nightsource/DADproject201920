@@ -62,7 +62,7 @@ props: ['user'],
 	                	// without creating a new reference
 	                	Object.assign(this.user, response.data.data);
 	                	this.$emit('user-canceled', this.user);
-	                });
+                    });
 	        }
 		}
 
