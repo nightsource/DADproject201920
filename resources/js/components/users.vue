@@ -1,8 +1,5 @@
 <template>
-    <div>
-        <div class="jumbotron"> 
-            <h1>{{ title }}</h1>
-     </div>
+    <div><div class="jumbotron"> <h1>{{ title }}</h1></div>
 
              
        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
@@ -33,7 +30,8 @@ export default{
         failMessage: '',
         currentUser: null,
         users: [],
-        pagination: {}
+        pagination: {} , 
+        wallets: [],
         }    
          
     },
@@ -90,10 +88,19 @@ export default{
          childMessage: function(message) {
             this.showSuccess = true;
             this.successMessage = message;
+        },
+         getWallets: function(){
+                axios.get('api/wallets')
+                .then(response=>{
+                    console.log(wallets)
+                    this.wallets = response.data.data;
+               })
+                
         }
     },
     mounted() {
        this.getUsers();
+       this.getWallets();
 
     },
     components:{
@@ -102,7 +109,7 @@ export default{
     
     }
     
-    }
+}
 </script>
 
 <style >

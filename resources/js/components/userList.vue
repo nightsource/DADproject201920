@@ -113,7 +113,7 @@
       </b-col>
     </b-row>
 
-<b-table
+<b-table striped hover
       id="my-table" 
       show-empty
       small
@@ -132,7 +132,7 @@
       
         <template v-slot:cell(photo)="row" v-slot:key="user.photo" :class="{active: currentUser === user}" >
               <b-img class="rounded" :src="'/storage/fotos/' + users.photo" ></b-img>
-           </template>     
+        </template>     
 
        <template v-slot:cell(actions)="row" v-slot:key="user.id" :class="{active: currentUser === user}">
            <b-button-group>
@@ -170,9 +170,11 @@ import UserEdit from './userEdit.vue'
                         {key: 'email', label: 'Email', sortable: true },
                         {key: 'type', label: 'Type', sortable: true }, 
                         {key: 'nif', label: 'Nif', sortable: true }, 
+                        {key: 'balance', label: 'Balance', sortable: true }, 
                         {key: 'active', label: 'Active', 
                         formatter: (value, key, item) => {return value ? 'Yes' : 'No'}, 
                                 sortable: true, sortByFormatted: true, filterByFormatted: true}, 
+                        
                         {key: 'actions', label: 'Actions', sortable: false } ],
                 currentUser:undefined,
                 currentPage: 1,
@@ -185,6 +187,7 @@ import UserEdit from './userEdit.vue'
                 filterOn: [],
                 delete_response: '',
                 delete_user: 'danger',
+
             }
         },  
         methods:{
@@ -222,7 +225,11 @@ import UserEdit from './userEdit.vue'
                     this.delete_user = "danger";
                     this.delete_response = error;
                 });
-            }
+            }, 
+             onFiltered(filteredItems) {
+                this.totalRows = filteredItems.length
+                this.currentPage = 1
+            },
         },  
         computed: {
            rows() {                
