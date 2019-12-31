@@ -24,6 +24,8 @@ import Users from './components/users';
 import Profile from './components/user_components/profile';
 import NavBar from './components/home/navbar';
 import AddMovement from './components/movements/registerMovement';
+import Movements from './components/movements/ListMovements/movements';
+
 
 window.Vue = require('vue');
 
@@ -65,6 +67,7 @@ const routes=[
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
     {path:'/addmovement',component:AddMovement},
+    {path:'/movements',component:Movements},
     {path:'/',redirect:'/welcome'}
 ];
 
