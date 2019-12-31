@@ -75,9 +75,10 @@
           description="Leave all unchecked to filter on all data"
           class="mb-0">
           <b-form-checkbox-group v-model="filterOn" class="mt-1">
+            <b-form-checkbox value="wallet_id">Wallet ID</b-form-checkbox>
             <b-form-checkbox value="type">Type</b-form-checkbox>
             <b-form-checkbox value="type_payment">Type Payment</b-form-checkbox>
-            <b-form-checkbox value="wallet_id">Wallet ID</b-form-checkbox>
+             <b-form-checkbox value="category_id">Category</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
       </b-col>
