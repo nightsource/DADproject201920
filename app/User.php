@@ -42,4 +42,8 @@ class User extends Authenticatable
     {
         return $this->where('email', $username)->first();
     }
+
+    public function wallet(){
+        return $this->hasOne('App\Wallet', 'id');
+    }
 }

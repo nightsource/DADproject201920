@@ -1,16 +1,18 @@
 <template>
     <div><div class="jumbotron"> <h1>{{ title }}</h1></div>
-
              
-       <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
-      v-on:delete-user="deleteUser"  :message="childMessage" ref="userListReference"></user-list>
 
         <div class="alert alert-success" v-if="showSuccess">
             <b-button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</b-button>
             <strong>{{ successMessage }}</strong>
         </div>  
 
+        <user-list :users="users" v-on:edit-user="editUser" :current-user="currentUser" 
+            v-on:delete-user="deleteUser"  :message="childMessage" ref="userListReference"></user-list>
+
           <user-edit v-if="editingUser" :user="currentUser" @save_user="saveUser" @cancel_edit="cancelEdit"></user-edit>
+    
+          
     </div>
 </template>
 
@@ -31,7 +33,7 @@ export default{
         currentUser: null,
         users: [],
         pagination: {} , 
-        wallets: [],
+
         }    
          
     },
@@ -82,25 +84,18 @@ export default{
                 axios.get('api/users')
                 .then(response=>{
                     this.users = response.data.data;
-               })
-                
+                })
+               
         },
          childMessage: function(message) {
             this.showSuccess = true;
             this.successMessage = message;
-        },
-         getWallets: function(){
-                axios.get('api/wallets')
-                .then(response=>{
-                    console.log(wallets)
-                    this.wallets = response.data.data;
-               })
-                
-        }
+         }
+     
     },
     mounted() {
        this.getUsers();
-       this.getWallets();
+
 
     },
     components:{

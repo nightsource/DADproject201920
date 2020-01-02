@@ -24,6 +24,7 @@ class User extends Resource
             'active' => $this->active,
             'photo' => $this->photo,
             'nif' => $this->nif,
+            'balance'=> $this->wallet ?  ($this->wallet->balance != 0 ? 'Has Money' : 'Empty') : '',
         ];
     }
 }

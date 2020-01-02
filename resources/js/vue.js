@@ -24,14 +24,16 @@ import Users from './components/users';
 import Profile from './components/user_components/profile';
 import NavBar from './components/home/navbar';
 import AddMovement from './components/movements/registerMovement';
-import Movements from './components/movements/ListMovements/movements';
-
+import Transactions from './components/movements/ListMovements/movements';
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css';
 
 window.Vue = require('vue');
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BootstrapVue)
+Vue.use(DatePicker)
 const pluginOptions = {
     /* see config reference */
     globalOptions: { currency: 'EUR' }
@@ -67,7 +69,7 @@ const routes=[
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
     {path:'/addmovement',component:AddMovement},
-    {path:'/movements',component:Movements},
+    {path:'/transactions',component:Transactions},
     {path:'/',redirect:'/welcome'}
 ];
 
@@ -82,7 +84,8 @@ const app = new Vue({
         return {
             store_token: "",
             user: {},
-            userWallet: {}
+            userWallet: {},
+            date:''
           };
     },
     computed: {
@@ -142,7 +145,7 @@ const app = new Vue({
         },
     },
     components: {
-      "nav-bar": NavBar
+      "nav-bar": NavBar,
     },
     created() {
         this.setAuthorization()
