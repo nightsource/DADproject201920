@@ -18,14 +18,13 @@
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
-                <a> Transactions
+                <a> <router-link to="/transactions"> Transactions</router-link>
                     <span class="num succ">2 new</span>
                 </a>
                 <ul class="side-nav-dropdown">
                     <!-- <li><a>List transactions</a></li> -->
                     <li><router-link v-if="$root.user.type==='u'" to="/addmovement">Register Expense</router-link></li>
-                    <li><router-link v-if="$root.user.type==='u'" to="/movements">List Movement</router-link></li>
-                </ul>
+                    </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
 

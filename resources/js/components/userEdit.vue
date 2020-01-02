@@ -65,9 +65,6 @@ props: ['user'],
                     });
 	        }
 		}
-
-    
-       
 }
 </script>
 

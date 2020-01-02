@@ -130,8 +130,9 @@
       @filtered="onFiltered"
     >
       
-        <template v-slot:cell(photo)="row" v-slot:key="user.photo" :class="{active: currentUser === user}" >
-              <b-img class="rounded" :src="'/storage/fotos/' + users.photo" ></b-img>
+        <template v-slot:cell(photo)="row" v-slot:key="user.id" :class="{active: currentUser === user}" >
+              <b-img v-bind="mainProps"  :src="'/storage/fotos/' + row.item.photo" ></b-img>
+      
         </template>     
 
        <template v-slot:cell(actions)="row" v-slot:key="user.id" :class="{active: currentUser === user}">
@@ -177,7 +178,7 @@ import UserEdit from './userEdit.vue'
                         
                         {key: 'actions', label: 'Actions', sortable: false } ],
                 currentUser:undefined,
-                currentPage: 1,
+                currentPage: 1, 
                 perPage: 10,
                 pageOptions: [5, 10, 15, 25, 50],
                 sortBy: '',
@@ -187,7 +188,7 @@ import UserEdit from './userEdit.vue'
                 filterOn: [],
                 delete_response: '',
                 delete_user: 'danger',
-
+              mainProps:{width: 70, height: 70,}
             }
         },  
         methods:{

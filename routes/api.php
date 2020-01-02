@@ -58,7 +58,7 @@ Route::middleware('auth:api')->post('movements/registerExternal', 'MovementContr
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:api')->put('users/{id}', 'UserControllerAPI@update');
-
+Route::middleware('auth:api')->put('user/movements', 'MovementControllerAPI@get'); //only the user can access his movements
 /*
 |
 |--------------------------------------------------------------------------
