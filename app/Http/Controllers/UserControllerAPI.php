@@ -47,7 +47,7 @@ class UserControllerAPI extends Controller
 
         $photoname = NULL;
         if(!is_null($request->file('file')))
-             = Storage::putFile('public/fotos', $request->file('file'));      
+        $photoname  = Storage::putFile('public/fotos', $request->file('file'));      
               
         
         $user = new User();
