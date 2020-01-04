@@ -47,11 +47,12 @@ class UserControllerAPI extends Controller
 
         $photoname = NULL;
         if(!is_null($request->file('file')))
-            $photoname = Storage::putFile('fotos', $request->file('file'));        
+             = Storage::putFile('public/fotos', $request->file('file'));      
+              
         
         $user = new User();
         $user->fill($request->all());
-        $user->photo = $photoname;
+        $user->photo = $photoname;      
         $user->password = Hash::make($user->password);
         $user->save();
         

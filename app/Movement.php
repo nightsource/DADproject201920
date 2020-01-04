@@ -30,4 +30,7 @@ class Movement extends Model
         'date' => 'datetime',
     ];
 
+    public function category(){
+        return $this->belongsTo('App\Category', 'id');
+    }
 }

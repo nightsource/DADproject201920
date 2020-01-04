@@ -16,20 +16,20 @@
                     placeholder="Email address" value=""/>
             </div>
             <div class="form-group">
+                <label for="inputType">Type</label>
+                <input
+                    type="type" class="form-control" v-model="user.type"
+                    name="type" id="inputType"
+                    placeholder="Type" value=""/>
+            </div>
+            <div class="form-group">
                 <label for="inputNIF">NIF</label>
                 <input
                     type="number" class="form-control" v-model="user.nif"
                     name="nif" id="inputNIF"
                     placeholder="NIF" value=""/>
             </div>
-            <div class="form-group">
-                 <label for="inputPhoto">Photo</label>
-                <input
-                    type="download" class="form-control" v-model="user.photo"
-                    name="photo" id="inputPhoto"
-                    placeholder="Photo" value=""/>
-                    <a><button class="btn btn-light" style="width:100%"> Download</button></a>
-            </div>
+            
             
             <div class="form-group">
                 <a class="btn btn-primary" v-on:click.prevent="saveUser()">Save</a>

@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use App\User;
 use App\Wallet;
 use App\Movement;
+use App\Category;
 
 class MovementControllerAPI extends Controller
 {
@@ -120,6 +121,20 @@ class MovementControllerAPI extends Controller
         $movement->fill($request->all());
         $movement->save();
         return response()->json(new MovementResource($movement), 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'description' => 'required',
+            'category_id' => 'required',
+            'type' => 'required'
+
+        ]);
+        $movement = Movement::findOrFail($id);
+        $movement->fill($request->all());
+        $movement->update();
+        return response()->json($movement, 200);
     }
 
     public function registerInternalMovement(Request $request){
