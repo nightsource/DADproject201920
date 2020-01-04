@@ -1,7 +1,6 @@
 <template>
     <div><div class="jumbotron"> <h1>{{ title }}</h1></div>
              
-
         <div class="alert alert-success" v-if="showSuccess">
             <b-button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</b-button>
             <strong>{{ successMessage }}</strong>
@@ -11,8 +10,6 @@
             v-on:delete-user="deleteUser"  :message="childMessage" ref="userListReference"></user-list>
 
           <user-edit v-if="editingUser" :user="currentUser" @save_user="saveUser" @cancel_edit="cancelEdit"></user-edit>
-    
-          
     </div>
 </template>
 
@@ -85,7 +82,7 @@ export default{
                 .then(response=>{
                     this.users = response.data.data;
                 })
-               
+
         },
          childMessage: function(message) {
             this.showSuccess = true;

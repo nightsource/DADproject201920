@@ -131,7 +131,7 @@
     >
       
         <template v-slot:cell(photo)="row" v-slot:key="user.id" :class="{active: currentUser === user}" >
-              <b-img v-bind="mainProps"  :src="'/storage/fotos/' + row.item.photo" ></b-img>
+              <b-img v-bind="mainProps" rounded :src="'/storage/fotos/' + row.item.photo" ></b-img>
       
         </template>     
 
@@ -169,7 +169,7 @@ import UserEdit from './userEdit.vue'
                 fields:[{ key: 'photo', label: 'Photo', sortable: false, }, 
                         {key: 'name', label: 'Name', sortable: true, sortDirection: 'desc' }, 
                         {key: 'email', label: 'Email', sortable: true },
-                        {key: 'type', label: 'Type', sortable: true }, 
+                        {key: 'type', label: 'Type',  sortable: true }, 
                         {key: 'nif', label: 'Nif', sortable: true }, 
                         {key: 'balance', label: 'Balance', sortable: true }, 
                         {key: 'active', label: 'Active', 
@@ -180,7 +180,7 @@ import UserEdit from './userEdit.vue'
                 currentUser:undefined,
                 currentPage: 1, 
                 perPage: 10,
-                pageOptions: [5, 10, 15, 25, 50],
+                pageOptions: [5, 10, 15, 25, 50, 100],
                 sortBy: '',
                 sortDesc: false,
                 sortDirection: 'asc',
@@ -188,7 +188,7 @@ import UserEdit from './userEdit.vue'
                 filterOn: [],
                 delete_response: '',
                 delete_user: 'danger',
-              mainProps:{width: 70, height: 70,}
+              mainProps:{width: 70, height: 70}
             }
         },  
         methods:{

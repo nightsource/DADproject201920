@@ -9,7 +9,7 @@
             <strong>{{ successMessage }}</strong>
         </div>  
 
-          <movement-edit v-if="editingMovement" :movement="currentMovement" @save_movement="saveMovement" @cancel_edit="cancelEdit"></movement-edit>
+          <movement-edit v-if="editingMovement" :movement="currentMovement" :categories="categories"  @save_movement="saveMovement" @cancel_edit="cancelEdit"></movement-edit>
         </div>
 </template>
 
@@ -22,12 +22,6 @@ export default{
         return{
             title: 'List Movements',
             movements: [],
-                user: {
-                    name: "",
-                    email: "",
-                    password: "",
-                    access_token: ""
-                },
             categories: [],
             pagination: [],
             currentMovement: null,
@@ -36,8 +30,6 @@ export default{
             showFailure: false,
             successMessage: '',
             failMessage: '',
-
-            
         }
     },
     methods:{
@@ -58,6 +50,7 @@ export default{
                     this.editingMovement = false;
                     this.$refs.movementListReference.currentMovement = null;
                 });
+
         },
         cancelEdit: function(movement){
             this.showSuccess = false;
@@ -112,20 +105,16 @@ export default{
            })
         },
         getCategories(){
-            axios.get("api/categories").then(response => {
-		        this.categories = response.data.data;
+            axios.get("api/categories")
+            .then(response => {
+	            this.categories = response.data.data;
             })
         },
-        getUser(){
-            axios.get("api/user").then(response => {
-                this.user = response.data;
-            })
-        } 
+       
     }, 
     mounted() {
          this.getMovements()
          this.getCategories()
-         this.getUser()
     },
     components:{
       'movement-list':MovementListComponent,

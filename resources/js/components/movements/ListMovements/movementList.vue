@@ -176,17 +176,20 @@
 </b-container>
 </template>
 
+
+
 <script>
 import movementsVue from './movements.vue'
 import MovementEdit from './movementEdit.vue'
 import DatePicker from 'vue2-datepicker'
 
-    export default {
+export default {
         props:['movements'],
         data:function(){
           return{
                
-                fields:[{ key: 'wallet_id', label: 'Wallet ID', sortable: true }, 
+                fields:[{ key: 'id', label: 'ID', sortable: true },
+                  { key: 'wallet_id', label: 'Wallet ID', sortable: true }, 
                         {key: 'type', label: 'Type', sortable: true, sortDirection: 'desc' }, 
                         {key: 'transfer_movement_id', label: 'Transfer Movement', sortable: true },
                         {key: 'transfer_wallet_id', label: 'Transfer Wallet', sortable: true }, 
@@ -243,10 +246,7 @@ import DatePicker from 'vue2-datepicker'
               this.currentPage = 1
             },
             onDateRangeChanged: function(picker){
-              console.log(picker)
-              console.log(picker[0])
-              console.log(picker[1])
-              this.range = picker.startDate + " - " + picker.endDate;    	
+              this.range = picker[0] + " - " + picker[1];    	
               },
               filterClick(){
                 console.log(this.range)

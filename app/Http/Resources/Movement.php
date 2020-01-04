@@ -31,6 +31,7 @@ class Movement extends Resource
             'start_balance' => $this->start_balance,
             'end_balance' => $this->end_balance,
             'value' => $this->value,
+          //  'category' => $this->category->name
         ];
     }
 }
