@@ -25,6 +25,7 @@ import Profile from './components/user_components/profile';
 import NavBar from './components/home/navbar';
 import AddMovement from './components/movements/registerMovement';
 import Transactions from './components/movements/ListMovements/movements';
+import Register from './components/user_components/adminRegister';
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css';
 
@@ -70,6 +71,7 @@ const routes=[
     {path:'/profile',component:Profile},
     {path:'/addmovement',component:AddMovement},
     {path:'/transactions',component:Transactions},
+    {path:'/register',component:Register},
     {path:'/',redirect:'/welcome'}
 ];
 
