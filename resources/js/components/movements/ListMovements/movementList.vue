@@ -65,7 +65,7 @@
           </b-input-group>
         </b-form-group>
       </b-col>
-      
+
 
       <b-col lg="6" class="my-1">
         <b-form-group
@@ -128,18 +128,20 @@
           label-for="dateSelect"
           class="mb-0"
         >
+      
             <date-picker 
             v-model="range" 
             id="dateSelect" 
             :lang="lang" range confirm
-            v-on:change="onDateRangeChanged"
+            
             ></date-picker>
+
+        <b-button v-model="filter" @click="filterClick">Filtrar</b-button>
 
         </b-form-group>
       </b-col>
 
-<button @click="filterClick">Filtrar</button>
-    
+
 
 <b-table striped hover
       id="my-table" 
@@ -156,7 +158,6 @@
       :sort-desc.sync="sortDesc"
       :sort-direction="sortDirection"
       @filtered="onFiltered"
-      :date="range"
     >
 
    <template v-slot:cell(actions)="row" v-slot:key="movement.id" :class="{active: currentMovement === movement}">
@@ -182,6 +183,7 @@
 import movementsVue from './movements.vue'
 import MovementEdit from './movementEdit.vue'
 import DatePicker from 'vue2-datepicker'
+import { format } from 'path'
 
 export default {
         props:['movements'],
@@ -232,7 +234,8 @@ export default {
                       placeholder: {
                         date: 'Select Date',
                         dateRange: 'Select Date Range'
-                      }
+                      },
+                      
                     }
             }
         },  
@@ -245,13 +248,22 @@ export default {
               this.totalRows = filteredItems.length
               this.currentPage = 1
             },
-            onDateRangeChanged: function(picker){
-              this.range = picker[0] + " - " + picker[1];    	
-              },
-              filterClick(){
-                console.log(this.range)
+            filterClick(){
+            let dateinicio = JSON.stringify(this.range[0])
+            dateinicio = dateinicio.slice(1,11)
+            dateinicio= new Date(dateinicio).toLocaleDateString('en-GB', {timeZone: 'UTC'}) 
+            console.log(dateinicio)
 
-              }
+            let datefim = JSON.stringify(this.range[1])
+            datefim = datefim.slice(1,11)
+           datefim= new Date(datefim).toLocaleDateString('en-GB', {timeZone: 'UTC'}) 
+           console.log(datefim)
+
+
+
+
+
+            },
         },  
         computed: {
            rows() {                
@@ -268,7 +280,6 @@ export default {
         },components:{
           "movement-edit": MovementEdit,
           DatePicker,
-
         }
     }  
 
