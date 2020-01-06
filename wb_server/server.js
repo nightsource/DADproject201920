@@ -28,6 +28,20 @@ var app = require('http').createServer();
 var io = require('socket.io')(app);
 
 var LoggedUsers = require('./loggedusers.js');
+var nodemailer = require('nodemailer');
+
+
+//dumb data 
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'youremail@gmail.com',
+      pass: 'yourpassword'
+    }
+  });
+  
+  var mailOptions = {
+  };
 
 app.listen(8080, function(){
     console.log('listening on *:8080');
@@ -64,6 +78,22 @@ io.on('connection', function (socket) {
 
         if (socket_id !== null) {
             io.to(socket_id).emit("new_movement", "new movement from user " + user.email);
+        } else {
+            mailOptions.from = user.email;
+            mailOptions.to = destUser.email;
+            mailOptions.subject = 'New Transfer';
+            mailOptions.text = 'New transfer from ' + user.email + ' to you please check your movements.';
+
+            transporter.sendMail(mailOptions, function(error, info){
+                console.log('Dumb email sent: ' + info.response);
+
+                //uncomment next lines for real use
+                /*if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }*/
+              });
         }
     });
 });

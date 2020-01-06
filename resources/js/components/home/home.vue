@@ -1,11 +1,11 @@
 <template>
 <div>
-    <last-access :user="this.$root.user"></last-access>
+    <last-access :user="user"></last-access>
 
     <section class="statistics">
         <div class="container-fluid">
             <div class="row">
-                <statistics :fa="'fas fa-euro-sign'" :value="$root.userWallet.balance" :valuesymbol="'€'" :type="'bg-primary'" :desc="'Current balance'">
+                <statistics :fa="'fas fa-euro-sign'" :value="userWallet.balance" :valuesymbol="'€'" :type="'bg-primary'" :desc="'Current balance'">
                 </statistics>
             </div>
         </div>
@@ -83,16 +83,23 @@ export default {
                 ]
             },
             tablemovements: [],
+            user: undefined,
+            userWallet: undefined,
         }
     },
     methods: {
-        async socketConnect() {      
-            console.log("socketConnect") 
-            console.log("this.$root.user")  
-            console.log(this.$root.user)      
-            this.$socket.emit('user_enter', this.$root.user);
+        getUser() {
+            axios.get("api/user").then(response => {
+                this.user = response.data;
+                this.$socket.emit('user_enter', this.user);
+            });
         },
-        async getBalanceMonthly() {            
+        getUserWallet() {
+            axios.get("api/user/wallet").then(response => {
+                this.userWallet = response.data.data;
+            });
+        },
+        async getBalanceMonthly() {
             axios
                 .get("api/user/movements/monthly")
                 .then(response => {
@@ -155,10 +162,11 @@ export default {
         },
     },
     mounted() {
+        this.getUser();
+        this.getUserWallet();
         this.getIncomeExpense();
         this.getBalanceMonthly();
         this.getLatestsMovements();
-        this.socketConnect();
     },
     components: {
         "chart-balance-income-vs-expense": ChartBalanceIncomeExpenseComponent,
@@ -167,8 +175,7 @@ export default {
         "statistics": Statistics,
         "last-access": LastAccess
     },
-    created: {
-    }
+    created: {}
 }
 </script>
 
