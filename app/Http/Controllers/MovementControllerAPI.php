@@ -70,7 +70,6 @@ class MovementControllerAPI extends Controller
         }      
     }    
 
-    //US 6 - can be adapted to future use
     public function registerIncomeByOperator(Request $request)
     {          
         $request->validate([
@@ -140,7 +139,6 @@ class MovementControllerAPI extends Controller
     public function registerInternalMovement(Request $request){
 
         $request->validate([
-            'type' => 'required',
             'category_id' => 'required',
             'start_balance' => 'required',
             'end_balance' => 'required',
