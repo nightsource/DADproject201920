@@ -5,7 +5,7 @@
       <b-alert v-if="goodResponse != ''" show variant="success">{{goodResponse}}</b-alert>
 
       <b-form-group label="Type of user:">
-        <b-form-select v-model="type" class="mb-3">
+        <b-form-select v-model="user_register.type" class="mb-3">
           <option value="u">User</option>
           <option value="o">Operator</option>
           <option value="a">Administrator</option>
@@ -116,10 +116,29 @@ export default {
         ? false
         : this.val_username && this.val_email && this.val_password;
     },
-    saveUser() {
+    async saveUser() {
       if (this.canRegister()) {
+        console.log("user to save, ", this.user_register);
         this.badResponse = "";
-        this.goodResponse = "Saving!!";
+        // const config = {
+        //             headers: {
+        //                 'content-type': 'multipart/form-data'
+        //             }
+        //         }
+        axios
+          .post("api/register", this.user_register)
+          .then(response => {
+            console.log("response to save ", response);
+            if ((response.status = 201)) {
+            }
+          })
+          .catch(error => {
+            console.log("erro: ", error.response.data.errors);
+            for (var prop in error.response.data.errors) {
+              // ctrl+shift+k (para abrir o console no mozilla firefox)
+              this.badResponse= this.badResponse + error.response.data.errors[prop];
+            }
+          });
       }
     },
     cancel() {

@@ -40,9 +40,10 @@ class UserControllerAPI extends Controller
         $request->validate([
                 'name' => 'required|min:3|regex:/^[A-Za-záàâãéèêíóôõúçÁÀÂÃÉÈÍÓÔÕÚÇ ]+$/',
                 'email' => 'required|email|unique:users,email',
-                'type' => '',
-                'photo' => '',
-                'nif' => ''
+                'type' => 'required'
+                // ,
+                // 'photo' => '',
+                // 'nif' => ''
             ]);
 
         $photoname = NULL;
@@ -65,6 +66,7 @@ class UserControllerAPI extends Controller
         }
 
         return response()->json(new UserResource($user), 201);
+        // return response()->json($user);
     }
 
     public function update(Request $request, $id)
