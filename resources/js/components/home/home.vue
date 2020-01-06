@@ -2,38 +2,66 @@
 <div>
     <last-access :user="user"></last-access>
 
-    <section class="statistics">
-        <div class="container-fluid">
-            <div class="row">
-                <statistics :fa="'fas fa-euro-sign'" :value="userWallet.balance" :valuesymbol="'€'" :type="'bg-primary'" :desc="'Current balance'">
-                </statistics>
+    <section v-if='user.type == "u"'>
+        <section class="statistics">
+            <div class="container-fluid">
+                <div class="row">
+                    <statistics :fa="'fas fa-euro-sign'" :value="userWallet.balance" :valuesymbol="'€'" :type="'bg-primary'" :desc="'Current balance'">
+                    </statistics>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="charts">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="chart-container">
+                            <h3>Monthly Balance</h3>
+                            <chart-balance-monthly ref="chartbalance" :chartdata="chartdatabalance"></chart-balance-monthly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-container">
+                            <h3>Income vs Expense</h3>
+                            <chart-balance-income-vs-expense ref="chartincomeexpense" :chartdata="chartdataincomeexpense"></chart-balance-income-vs-expense>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chart-container">
+                            <h3>Latests 5 movements</h3>
+                            <latests-movements :tabledata="tablemovements"></latests-movements>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </section>
 
-    <section class="charts">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="chart-container">
-                        <h3>Monthly Balance</h3>
-                        <chart-balance-monthly ref="chartbalance" :chartdata="chartdatabalance"></chart-balance-monthly>
-                    </div>
+    <section v-if='user.type == "a"'>
+        <section class="statistics">
+            <div class="container-fluid">
+                <div class="row">
+                    <statistics :fa="'fa fa-users fa-fw bg-primary'" :value="numberUsers" :valuesymbol="''" :type="'bg-primary'" :desc="'Number of users'">
+                    </statistics>
+                    <statistics :fa="'fa fa-eur fa-fw bg-primary'" :value="currentBankBalance" :valuesymbol="'€'" :type="'bg-primary'" :desc="'Current bank balance'">
+                    </statistics>
                 </div>
-                <div class="col-md-4">
-                    <div class="chart-container">
-                        <h3>Income vs Expense</h3>
-                        <chart-balance-income-vs-expense ref="chartincomeexpense" :chartdata="chartdataincomeexpense"></chart-balance-income-vs-expense>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="chart-container">
-                        <h3>Latests 5 movements</h3>
-                        <latests-movements :tabledata="tablemovements"></latests-movements>
+            </div>
+        </section>
+
+        <section class="charts">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="chart-container">
+                            <h3>Monthly Balance</h3>
+                            <bank-balance-monthly ref="chartbalance" :chartdata="chartbankbalance"></bank-balance-monthly>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </section>
 </div>
 </template>
@@ -82,24 +110,54 @@ export default {
                     }
                 ]
             },
+            chartbankbalance: {
+                labels: [],
+                datasets: [{
+                    label: "Bank Balance Monthly",
+                    fill: true,
+                    data: [],
+                    pointBorderColor: "#4bc0c0",
+                    borderColor: '#4bc0c0',
+                    borderWidth: 2,
+                    showLine: true,
+                }]
+            },
             tablemovements: [],
             user: undefined,
             userWallet: undefined,
+            numberUsers: 0,
+            currentBankBalance: 0,
         }
     },
     methods: {
         getUser() {
-            axios.get("api/user").then(response => {
-                this.user = response.data;
-                this.$socket.emit('user_enter', this.user);
-            });
+            axios.get("api/user")
+                .then(response => {
+                    this.user = response.data;
+                    this.$socket.emit('user_enter', this.user);
+
+                    console.log(this.user);
+
+                    if (this.user.type == 'u') {
+                        this.getUserWallet();
+                        this.getIncomeExpense();
+                        this.getBalanceMonthly();
+                        this.getLatestsMovements();
+                    } 
+                    
+                    if (this.user.type == 'a') {
+                        this.getNumberOfUsers();
+                        this.getBankBalance();
+                        this.getBankBalanceMonthly();
+                    }
+                });
         },
         getUserWallet() {
             axios.get("api/user/wallet").then(response => {
                 this.userWallet = response.data.data;
             });
         },
-        async getBalanceMonthly() {
+        getBalanceMonthly() {
             axios
                 .get("api/user/movements/monthly")
                 .then(response => {
@@ -115,7 +173,7 @@ export default {
                     console.log(error.response)
                 });
         },
-        async getIncomeExpense() {
+        getIncomeExpense() {
             axios
                 .get("api/user/movements/incomeexpense")
                 .then(response => {
@@ -136,7 +194,7 @@ export default {
                     console.log(error.response)
                 });
         },
-        async getLatestsMovements() {
+        getLatestsMovements() {
             axios
                 .get("api/user/movements/latests")
                 .then(response => {
@@ -160,13 +218,31 @@ export default {
                     console.log(error)
                 });
         },
+        getNumberOfUsers() {
+            axios
+                .get("api/users")
+                .then(response => {
+                    this.numberUsers = response.data.data.length;
+                })
+                .catch((error) => {
+                    console.log("error");
+                    console.log(error)
+                });
+        },
+        getBankBalance() {
+            axios
+                .get("api/bankbalance")
+                .then(response => {
+                    this.currentBankBalance = response.data;
+                })
+                .catch((error) => {
+                    console.log("error");
+                    console.log(error)
+                });
+        },
     },
     mounted() {
         this.getUser();
-        this.getUserWallet();
-        this.getIncomeExpense();
-        this.getBalanceMonthly();
-        this.getLatestsMovements();
     },
     components: {
         "chart-balance-income-vs-expense": ChartBalanceIncomeExpenseComponent,

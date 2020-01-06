@@ -84,9 +84,7 @@ io.on('connection', function (socket) {
             mailOptions.subject = 'New Transfer';
             mailOptions.text = 'New transfer from ' + user.email + ' to you please check your movements.';
 
-            transporter.sendMail(mailOptions, function(error, info){
-                console.log('Dumb email sent: ' + info.response);
-
+            transporter.sendMail(mailOptions, function(error, info){              
                 if (error) {
                   console.log(error);
                 } else {
