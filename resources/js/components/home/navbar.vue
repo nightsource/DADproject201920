@@ -27,11 +27,12 @@
                     </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
-
-            <li v-if="$root.user.type==='a'"></li>
-            <p v-if="$root.user.type==='a'">Admin only:</p>
-            <li v-if="$root.user.type==='a'"><i class="fa fa fa-users fa-fw"></i>
+            <li v-if="$root.user.type==='a'">Admin only:</li>
+            <li v-if="$root.user.type==='a'"><i class="fa fa-users fa-fw"></i>
                 <router-link to="/users">Users</router-link>
+            </li>
+            <li v-if="$root.user.type==='a'"><i class="fa fa-user-plus fa-fw"></i>
+                <router-link to="/register">Create User</router-link>
             </li>
 
             <li v-if="$root.user.type==='o'"></li>
@@ -138,7 +139,7 @@ export default {
 }
 
 .side-nav .categories>li {
-    padding: 17px 40px 17px 30px;
+    padding: 17px 30px 17px 30px;
     overflow: hidden;
     border-bottom: 1px solid rgba(255, 255, 255, 0.02);
     cursor: pointer;
