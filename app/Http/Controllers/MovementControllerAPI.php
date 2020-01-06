@@ -69,7 +69,6 @@ class MovementControllerAPI extends Controller
                                             ->get());        
     }    
 
-    //US 6 - can be adapted to future use
     public function registerIncomeByOperator(Request $request)
     {          
         $request->validate([

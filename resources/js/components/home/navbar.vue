@@ -3,10 +3,10 @@
     <div class="side-nav" id="show-side-navigation1">
 
         <div class="heading">
-            <img :src="'/storage/fotos/' + $root.user.photo">
+            <img :src="'/storage/fotos/' + user.photo">
             <div class="info">
-                <h3><a>{{$root.user.name}}</a></h3>
-                <p>{{$root.user.email}}</p>
+                <h3><a>{{user.name}}</a></h3>
+                <p>{{user.email}}</p>
                 <router-link to="/profile">My Profile</router-link>
             </div>
         </div>
@@ -18,26 +18,28 @@
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
-                <a> <router-link to="/transactions"> Transactions</router-link>
-                    <span class="num succ">2 new</span>
-                </a>
+                <router-link to="/transactions"> Transactions</router-link>
+                <a><span v-if='newT > 0' class="num succ">{{newT}} new</span></a>
+
                 <ul class="side-nav-dropdown">
                     <!-- <li><a>List transactions</a></li> -->
-                    <li><router-link v-if="$root.user.type==='u'" to="/addmovement">Register Expense</router-link></li>
-                    </ul>
+                    <li>
+                        <router-link v-if="user.type==='u'" to="/addmovement">Register Expense</router-link>
+                    </li>
+                </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
-            <li v-if="$root.user.type==='a'">Admin only:</li>
-            <li v-if="$root.user.type==='a'"><i class="fa fa-users fa-fw"></i>
+            <li v-if="user.type==='a'">Admin only:</li>
+            <li v-if="user.type==='a'"><i class="fa fa-users fa-fw"></i>
                 <router-link to="/users">Users</router-link>
             </li>
-            <li v-if="$root.user.type==='a'"><i class="fa fa-user-plus fa-fw"></i>
+            <li v-if="user.type==='a'"><i class="fa fa-user-plus fa-fw"></i>
                 <router-link to="/register">Create User</router-link>
             </li>
 
-            <li v-if="$root.user.type==='o'"></li>
-            <p v-if="$root.user.type==='o'">Operator only:</p>
-            <li v-if="$root.user.type==='o'"><i class="fa fa fa-users fa-fw"></i>
+            <li v-if="user.type==='o'"></li>
+            <p v-if="user.type==='o'">Operator only:</p>
+            <li v-if="user.type==='o'"><i class="fa fa fa-users fa-fw"></i>
                 <router-link to="/users">Users</router-link>
             </li>
         </ul>
@@ -53,19 +55,49 @@ import ProfileComponent from "../user_components/profile";
 export default {
     data: function () {
         return {
-            userWantsToSeeProfile: false
+            user: undefined,
+            userWantsToSeeProfile: false,
+            newT: 0,
         }
     },
-    methods: {       
+    methods: {
         user_wants_to_see_profile() {
             this.userWantsToSeeProfile = !this.userWantsToSeeProfile;
         },
+        getUser() {
+            axios.get("api/user").then(response => {
+                this.user = response.data;    
+                this.$socket.emit('user_enter', this.user);
+            });
+        },
         user_wants_to_logout() {
-            this.$router.push('logout')
+            axios
+                .post("api/logout")
+                .then(response => {
+                    this.$socket.emit('user_exit', this.user);
+                    this.$root.deleteToken();
+                    this.$router.push('welcome')
+                })
+                .catch((error) => {
+                    console.log("error")
+                    console.log(error)
+                });
         },
     },
     components: {
         "user-profile": ProfileComponent
+    },
+    mounted() {
+        this.getUser();
+    },
+    sockets: {
+        connect() {            
+            console.log('socket connected (socketID = ' + this.$socket.id + ')');
+        },
+        new_movement(msg) {
+            this.newT += 1;
+            console.log(msg);
+        }
     }
 }
 </script>
