@@ -35,8 +35,8 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'youremail@gmail.com',
-      pass: 'yourpassword'
+      user: 'dadproject20192020@gmail.com',
+      pass: '123qwe++'
     }
   });
   
@@ -80,19 +80,18 @@ io.on('connection', function (socket) {
             io.to(socket_id).emit("new_movement", "new movement from user " + user.email);
         } else {
             mailOptions.from = user.email;
-            mailOptions.to = destUser.email;
+            mailOptions.to = 'dadproject20192020@gmail.com';//destUser.email;
             mailOptions.subject = 'New Transfer';
             mailOptions.text = 'New transfer from ' + user.email + ' to you please check your movements.';
 
             transporter.sendMail(mailOptions, function(error, info){
                 console.log('Dumb email sent: ' + info.response);
 
-                //uncomment next lines for real use
-                /*if (error) {
+                if (error) {
                   console.log(error);
                 } else {
                   console.log('Email sent: ' + info.response);
-                }*/
+                }
               });
         }
     });
