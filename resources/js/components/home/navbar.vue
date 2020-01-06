@@ -18,13 +18,16 @@
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
-                <a> <router-link to="/transactions"> Transactions</router-link>
-                    <span class="num succ">2 new</span>
+                <a>
+                    <router-link to="/transactions"> Transactions</router-link>
+                    <span v-if='newT > 0' class="num succ">{{newT}} new</span>
                 </a>
                 <ul class="side-nav-dropdown">
                     <!-- <li><a>List transactions</a></li> -->
-                    <li><router-link v-if="$root.user.type==='u'" to="/addmovement">Register Expense</router-link></li>
-                    </ul>
+                    <li>
+                        <router-link v-if="$root.user.type==='u'" to="/addmovement">Register Expense</router-link>
+                    </li>
+                </ul>
             </li>
             <li @click="user_wants_to_logout"><i class="fa fa-sign-out fa-fw"></i><a> Logout</a></li>
             <li v-if="$root.user.type==='a'">Admin only:</li>
@@ -53,19 +56,43 @@ import ProfileComponent from "../user_components/profile";
 export default {
     data: function () {
         return {
-            userWantsToSeeProfile: false
+            user: undefined,
+            userWantsToSeeProfile: false,
+            newT: 0,
         }
     },
-    methods: {       
+    methods: {
         user_wants_to_see_profile() {
             this.userWantsToSeeProfile = !this.userWantsToSeeProfile;
         },
         user_wants_to_logout() {
-            this.$router.push('logout')
+            axios
+                .post("api/logout")
+                .then(response => {
+                    console.log("this.user")
+                    console.log(this.user)
+
+                    this.$socket.emit('user_exit', this.$root.user.email);
+                    this.$root.deleteToken();
+                    this.$router.push('welcome')
+                })
+                .catch((error) => {
+                    console.log("error")
+                    console.log(error)
+                });       
         },
     },
     components: {
         "user-profile": ProfileComponent
+    },
+    sockets: {
+        connect () {
+            console.log('socket connected (socketID = '+this.$socket.id+ ')');
+        },
+        new_movement(msg) {
+            this.newT += 1;
+            console.log(msg);
+        }
     }
 }
 </script>

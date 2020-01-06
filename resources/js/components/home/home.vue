@@ -86,7 +86,13 @@ export default {
         }
     },
     methods: {
-        async getBalanceMonthly() {
+        async socketConnect() {      
+            console.log("socketConnect") 
+            console.log("this.$root.user")  
+            console.log(this.$root.user)      
+            this.$socket.emit('user_enter', this.$root.user);
+        },
+        async getBalanceMonthly() {            
             axios
                 .get("api/user/movements/monthly")
                 .then(response => {
@@ -152,6 +158,7 @@ export default {
         this.getIncomeExpense();
         this.getBalanceMonthly();
         this.getLatestsMovements();
+        this.socketConnect();
     },
     components: {
         "chart-balance-income-vs-expense": ChartBalanceIncomeExpenseComponent,
@@ -160,6 +167,8 @@ export default {
         "statistics": Statistics,
         "last-access": LastAccess
     },
+    created: {
+    }
 }
 </script>
 
