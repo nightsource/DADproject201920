@@ -49,19 +49,6 @@
                 </div>
             </div>
         </section>
-
-        <section class="charts">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="chart-container">
-                            <h3>Monthly Balance</h3>
-                            <bank-balance-monthly ref="chartbalance" :chartdata="chartbankbalance"></bank-balance-monthly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </section>
 </div>
 </template>
