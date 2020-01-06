@@ -83,16 +83,19 @@ export default {
     },
     methods: {
         isUserLogged() {
-            if (this.is_user_logged)
+            if (this.is_user_logged) {
                 this.$router.push('home')
+            }
         },
         loginUser() {
             axios
                 .post("api/login", this.user_login)
                 .then(response => {
                     this.user_login.access_token = response.data.access_token;
+                    console.log("this.user_login");
+                    console.log(this.user_login);
+                    this.$socket.emit('user_enter', this.user_login);
                     this.$root.setToken(this.user_login.access_token);
-
                     this.$router.push('home')
                 })
                 .catch((error) => {
