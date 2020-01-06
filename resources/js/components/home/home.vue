@@ -130,7 +130,7 @@ export default {
         }
     },
     methods: {
-        async getUser() {
+        getUser() {
             axios.get("api/user")
                 .then(response => {
                     this.user = response.data;
@@ -152,12 +152,12 @@ export default {
                     }
                 });
         },
-        async getUserWallet() {
+        getUserWallet() {
             axios.get("api/user/wallet").then(response => {
                 this.userWallet = response.data.data;
             });
         },
-        async getBalanceMonthly() {
+        getBalanceMonthly() {
             axios
                 .get("api/user/movements/monthly")
                 .then(response => {
@@ -173,7 +173,7 @@ export default {
                     console.log(error.response)
                 });
         },
-        async getIncomeExpense() {
+        getIncomeExpense() {
             axios
                 .get("api/user/movements/incomeexpense")
                 .then(response => {
@@ -239,31 +239,6 @@ export default {
                     console.log("error");
                     console.log(error)
                 });
-        },
-        getBankBalanceMonthly() {
-            /*axios
-                .get("api/user/movements/latests")
-                .then(response => {
-                    this.tablemovements = response.data.data;
-
-                    this.tablemovements.forEach(movement => {
-                        movement.date = new Date(movement.date).toLocaleString('en-GB', {
-                            timeZone: 'UTC'
-                        })
-
-                        if (movement.type == 'e') {
-                            movement.value = 0 - movement.value
-                            movement._cellVariants = "{ value: 'danger' }"
-                        }
-
-                        movement.value = "€ " + movement.value
-                    });
-                })
-                .catch((error) => {
-                    console.log("error");
-                    console.log(error)
-                });
-        */
         },
     },
     mounted() {

@@ -13,9 +13,6 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
 import Moment from 'moment';
-import Logout from './components/user_components/logout';
-//import Login from './components/login';
-//import Register from './components/user_components/register';
 import Home from './components/home/home';
 import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
@@ -29,6 +26,7 @@ import Transactions from './components/movements/ListMovements/movements';
 import Register from './components/user_components/adminRegister';
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css';
+import VueSocketIO from 'vue-socket.io';
 
 window.Vue = require('vue');
 
@@ -73,7 +71,6 @@ const routes=[
     //{path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
     {path:'/users',component:Users},
-    {path:'/logout',component:Logout},
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
     {path:'/addmovement',component:AddMovement},

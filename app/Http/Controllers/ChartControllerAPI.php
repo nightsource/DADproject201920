@@ -38,23 +38,6 @@ class ChartControllerAPI extends Controller
 
         return $chart;
     }
-    public function bank(Request $request)
-    {
-        $sub = DB::table('movements')
-        ->select(DB::raw('MAX(DATE)'))
-        ->where('wallet_id', "=", $request->user()->id)
-        ->where('date', ">", DB::raw('DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH) ,"%Y-%m-01")'))
-        ->where('date', "<", DB::raw('DATE_FORMAT(NOW(), "%Y-%m-01")'))
-        ->groupBy(DB::raw('YEAR(DATE)'), DB::raw('MONTH(DATE)'));      
-
-        $chart = DB::table('movements')
-        ->select(DB::raw("CONCAT(YEAR(DATE), ' ', MONTHNAME(DATE)) AS label"), 'VALUE AS data')
-        ->whereIn('date', $sub)
-        ->distinct()
-        ->get();
-
-        return $chart;
-    }
 
     public function incomeexpense(Request $request)
     {
