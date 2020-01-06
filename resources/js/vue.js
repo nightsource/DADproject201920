@@ -44,6 +44,10 @@ const pluginOptions = {
   }
   Vue.use(VueCurrencyInput, pluginOptions)
 Vue.config.productionTip = false
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://134.209.187.220/:8080'
+   }));
 
 const ls = new SecureLS({ isCompression: false });
 const store = new Vuex.Store({
