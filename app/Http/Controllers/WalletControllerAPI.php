@@ -30,6 +30,11 @@ class WalletControllerAPI extends Controller
         return new WalletResource(Wallet::firstOrFail($request->user()->id));
     }
 
+    public function total(Request $request)
+    {
+        return Wallet::all()->sum('balance');
+    }
+
     public function store($email)
     {                       
         $wallet = new Wallet();        

@@ -30,8 +30,10 @@ Route::middleware('auth:api')->get('user/wallet/{email}', 'WalletControllerAPI@g
 
 Route::middleware(['auth:api', 'admin:api'])->get('movements', 'MovementControllerAPI@index'); //admin only
 Route::middleware(['auth:api', 'admin:api'])->get('movement/{id}', 'MovementControllerAPI@show'); //admin only
+Route::middleware(['auth:api', 'admin:api'])->get('bankbalance', 'WalletControllerAPI@total'); //admin only
 Route::middleware('auth:api')->get('user/movements', 'MovementControllerAPI@get'); //only the user can access his movements
 Route::middleware('auth:api')->get('user/movements/monthly', 'ChartControllerAPI@monthly'); //only the user can access his movements
+Route::middleware(['auth:api', 'admin:api'])->get('bankbalance', 'ChartControllerAPI@bank'); //only for admin
 Route::middleware('auth:api')->get('user/movements/incomeexpense', 'ChartControllerAPI@incomeexpense'); //only the user can access his incomes and expenses
 Route::middleware('auth:api')->get('user/movements/latests', 'MovementControllerAPI@getLatests'); //only the user can access his incomes and expenses
 Route::middleware('auth:api')->get('user/movements/incomes', 'MovementControllerAPI@getIncome'); //only the user can access his movements

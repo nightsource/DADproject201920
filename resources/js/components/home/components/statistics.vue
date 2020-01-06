@@ -1,7 +1,7 @@
 <template>
 <div class="col-md-4">
     <div class="box">
-        <i class= "fa fa-eur fa-fw bg-primary"></i>
+        <i :class='fa'></i>
         <div class="info">
             <h3>{{value}}</h3> <span>{{valuesymbol}}</span>
             <p>{{desc}}</p>
