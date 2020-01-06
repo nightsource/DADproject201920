@@ -12,6 +12,10 @@ import VueCurrencyInput from 'vue-currency-input'
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
+import Moment from 'moment';
+import Logout from './components/user_components/logout';
+//import Login from './components/login';
+//import Register from './components/user_components/register';
 import Home from './components/home/home';
 import Welcome from './components/welcome';
 import BootstrapVue from 'bootstrap-vue';
@@ -25,7 +29,6 @@ import Transactions from './components/movements/ListMovements/movements';
 import Register from './components/user_components/adminRegister';
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css';
-import VueSocketIO from "vue-socket.io";
 
 window.Vue = require('vue');
 
@@ -33,15 +36,17 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BootstrapVue)
 Vue.use(DatePicker)
+Vue.use(Moment)
+
 const pluginOptions = {
     /* see config reference */
     globalOptions: { currency: 'EUR' }
   }
-Vue.use(VueCurrencyInput, pluginOptions)
+  Vue.use(VueCurrencyInput, pluginOptions)
 Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
     debug: true,
-    connection: 'http://127.0.0.1:8080'
+    connection: 'http://134.209.187.220/:8080'
    }));
 
 const ls = new SecureLS({ isCompression: false });
@@ -64,8 +69,11 @@ const store = new Vuex.Store({
   });
 
 const routes=[
+    //{path:'/login',component:Login},
+    //{path:'/register',component:Register},
     {path:'/welcome',component:Welcome},
     {path:'/users',component:Users},
+    {path:'/logout',component:Logout},
     {path:'/home',component:Home},
     {path:'/profile',component:Profile},
     {path:'/addmovement',component:AddMovement},

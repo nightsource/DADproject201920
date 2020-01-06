@@ -2,9 +2,9 @@
 <div>
     <b-table id='movements-table' :small="true" :fixed="true" :striped="true" 
     :fields="fields" :items="tabledata" :per-page="perPage" :current-page="currentPage"></b-table>
-    
-    <b-pagination v-if='tabledata.length > 10' pills align="center" v-model="currentPage" :total-rows="rows" 
-    :per-page="perPage" size="sm" aria-controls="movements-table"></b-pagination>
+<!--     
+    <b-pagination pills align="center" v-model="currentPage" :total-rows="rows" 
+    :per-page="perPage" size="sm" aria-controls="movements-table"></b-pagination> -->
 </div>
 </template>
 
