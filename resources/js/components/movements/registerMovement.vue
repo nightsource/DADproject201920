@@ -189,6 +189,11 @@ export default {
                 return;
               } else {
                 this.response = "";
+                console.log("response")
+                console.log(response)
+                let destUser = response.data;
+                console.log("destUser")                
+                console.log(destUser)                                
                 this.mov_register.transfer_wallet_id = response.data.id;
                 console.log(
                   "movement to save :",
@@ -200,6 +205,9 @@ export default {
                     console.log("response to save ", response);
                     this.showSuccess = true;
                     this.successMessage = "Movement saved successfully!";
+
+                    this.$socket.emit('new_movement', this.user, destUser);
+                    
                     this.$router.push("home");
                   });
                 //create websocket tell destination about income value
@@ -212,7 +220,7 @@ export default {
             .then(response => {
               console.log("response to save ", response);
               this.showSuccess = true;
-							this.successMessage = "Movement saved successfully!";
+              this.successMessage = "Movement saved successfully!";              
 							this.$router.push("home");
             });
         }
