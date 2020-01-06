@@ -18,10 +18,9 @@
 
             <li>
                 <i class="fa fa-th-list fa-fw"></i>
-                <a>
-                    <router-link to="/transactions"> Transactions</router-link>
-                    <span v-if='newT > 0' class="num succ">{{newT}} new</span>
-                </a>
+                <router-link to="/transactions"> Transactions</router-link>
+                <span v-if='newT > 0' class="num succ">{{newT}} new</span>
+                
                 <ul class="side-nav-dropdown">
                     <!-- <li><a>List transactions</a></li> -->
                     <li>
@@ -79,15 +78,15 @@ export default {
                 .catch((error) => {
                     console.log("error")
                     console.log(error)
-                });       
+                });
         },
     },
     components: {
         "user-profile": ProfileComponent
     },
     sockets: {
-        connect () {
-            console.log('socket connected (socketID = '+this.$socket.id+ ')');
+        connect() {
+            console.log('socket connected (socketID = ' + this.$socket.id + ')');
         },
         new_movement(msg) {
             this.newT += 1;
