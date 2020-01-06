@@ -62,12 +62,11 @@ class MovementControllerAPI extends Controller
     }       
 
     public function getLatests(Request $request)
-    {       
-        if ($request->has('page')) {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->paginate(5));
-        } else {
-            return MovementResource::collection(Movement::orderBy('id', 'desc')->take(5)->get());
-        }      
+    {
+        return MovementResource::collection(Movement::where('wallet_id', $request->user()->id)
+                                            ->orderBy('date', 'desc')
+                                            ->take(5)
+                                            ->get());        
     }    
 
     //US 6 - can be adapted to future use
@@ -140,7 +139,6 @@ class MovementControllerAPI extends Controller
     public function registerInternalMovement(Request $request){
 
         $request->validate([
-            'type' => 'required',
             'category_id' => 'required',
             'start_balance' => 'required',
             'end_balance' => 'required',
@@ -185,7 +183,7 @@ class MovementControllerAPI extends Controller
         $origWallet->save();
         $destWallet->save();
         return response()->json(new MovementResource($orig_mov), 201);
-        // return response()->json($destWalletBalance);
+        // return response()->json($request);
     }
 
     public function registerExternalMovement(Request $request){

@@ -12,6 +12,7 @@ import VueCurrencyInput from 'vue-currency-input'
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
+import Moment from 'moment';
 import Logout from './components/user_components/logout';
 //import Login from './components/login';
 //import Register from './components/user_components/register';
@@ -35,6 +36,8 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BootstrapVue)
 Vue.use(DatePicker)
+Vue.use(Moment)
+
 const pluginOptions = {
     /* see config reference */
     globalOptions: { currency: 'EUR' }

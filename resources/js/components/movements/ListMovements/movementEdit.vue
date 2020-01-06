@@ -12,8 +12,7 @@
                     placeholder="Enter name"
                     ></b-form-input>
       </b-form-group>
-
-    
+      
    <b-form-group label="Category:">
         <b-form-select v-model="movement.category_id"  class="mb-3" @input="choose">
           <!-- This slot appears above the options from 'options' prop -->
@@ -22,13 +21,11 @@
           </template>
           <!-- These options will appear after the ones from 'options' prop  -->
           <option
-            v-for="category in categories"
-            :key="category.id"
-            :value="category.id"
-            :text="category.name"
-          >{{  category.name }}</option>
-
-          
+            v-for="cat in categories"
+            :key="cat.id"
+            :value="cat.id"
+            :text="cat.name"
+          >{{cat.name}}</option>
         </b-form-select>  
       </b-form-group>
      
@@ -45,20 +42,17 @@ props: ['movement'],
 data: function() {
         return {
             categories: [],
-
-
-            
         }
     }, 
     methods: {
         choose(value){
-          console.log(value)
+          // console.log(value)
 
-          if(value != category.category_id){
-              category.category_id=cat.id;
-               console.log("vxczvcvxcvzxcbzvcbzfb", cat)
+          // if(value != category.category_id){
+          //     category.category_id=cat.id;
+          //      console.log("vxczvcvxcvzxcbzvcbzfb", cat)
 
-          }
+          // }
         /*	this.categories.forEach(cat => {
              if(cat.name==value)category.category_id=cat.id;
                console.log("vxczvcvxcvzxcbzvcbzfb", cat)
@@ -66,17 +60,17 @@ data: function() {
           
         },
 
-    	        saveMovement: function(){
+    	  saveMovement: function(){
             console.log(this.movement)
-               axios.put('api/user/movements/'+ this.movement.id, this.movement)
-                         .then(response=>{
-	                	Object.assign(this.movement, response.data.data);
-                        this.$emit('movement-saved', this.movement)
-                        this.showSuccess = true
-                        this.successMessage = "Movement Saved"
+              //  axios.put('api/user/movements/'+ this.movement.id, this.movement)
+              //            .then(response=>{
+	            //     	Object.assign(this.movement, response.data.data);
+              //           this.$emit('movement-saved', this.movement)
+              //           this.showSuccess = true
+              //           this.successMessage = "Movement Saved"
                        
 
-	                });
+	            //     });
 	        },
 	        cancelEdit: function(){
 	        	axios.get('api/user/movements/'+this.movement.id)
@@ -88,9 +82,6 @@ data: function() {
             getCategories() {
                 axios.get("api/categories").then(response => {
                     this.categories = response.data.data;
-
-
-                                
                 });
             },
         },
